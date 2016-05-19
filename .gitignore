@@ -1,0 +1,14 @@
+auto/
+*.prv
+*.log
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.run.xml
+_*
+*.synctex.gz
+*.toc

@@ -1,0 +1,310 @@
+\documentclass[ngerman,a4paper,11pt]{scrartcl}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\usepackage{csquotes}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage{braket}
+\usepackage{enumitem}
+\usepackage[shortcuts]{extdash}
+\usepackage{cancel}
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+\usepackage{nameref}
+\usepackage{hyperref}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtools}
+\usepackage{thmtools}
+\usepackage[capitalize]{cleveref}
+
+\bibliography{literatur.bib}
+
+\newlist{thmlist}{enumerate}{1}
+\setlist[thmlist]{label=(\roman{thmlisti}), ref=\thethm (\roman{thmlisti}),noitemsep}
+\newlist{remlist}{enumerate}{1}
+\setlist[remlist]{label=(\arabic*), ref=\thethm (\arabic*),noitemsep}
+\newlist{thmasslist}{enumerate}{1}
+\setlist[thmasslist]{label=(\alph*), ref=\thethm (\alph*),noitemsep}
+
+\newtheoremstyle{break}{}{}{}{}{\bfseries}{}{\newline}{}
+\declaretheoremstyle[headpunct=.:]{claim}
+
+\declaretheorem[
+name=Satz,
+%refname={theorem,theorems},        %Lower Case Versions of Theorem Type
+% Refname={Satz,Sätze},
+style=definition,
+numberwithin=section]{thm}
+
+\declaretheorem[
+name=Satz,
+%refname={theorem,theorems},        %Lower Case Versions of Theorem Type
+% Refname={Satz,Sätze},
+style=break,
+sibling=thm]{thmbk}
+
+\declaretheorem[
+name=Lemma,
+%refname={lemma,lemmas},
+% Refname={Lemma,Lemmas},
+style=definition,
+sibling=thm]{lem}
+
+\declaretheorem[
+name=Definition,
+%refname={lemma,lemmas},
+% Refname={Definition,Definitionen},
+style=definition,
+sibling=thm]{defn}
+
+\declaretheorem[
+name=Bemerkung,
+%refname={lemma,lemmas},
+% Refname={Bemerkung,Bemerkungen},
+style=definition,
+sibling=thm]{rem}
+
+\declaretheorem[
+name=Beispiel,
+%refname={lemma,lemmas},
+% Refname={Bemerkung,Bemerkungen},
+style=definition,
+sibling=thm]{exmp}
+
+\declaretheorem[
+name=Beispiel,
+%refname={theorem,theorems},        %Lower Case Versions of Theorem Type
+% Refname={Satz,Sätze},
+style=break,
+sibling=thm]{exmpbk}
+
+\declaretheorem[
+name=Beh,
+numbered=no,
+%refname={lemma,lemmas},
+% Refname={Bemerkung,Bemerkungen},
+style=claim]{claim}
+
+\declaretheorem[
+name=Beweis,
+numbered=no,
+%refname={lemma,lemmas},
+% Refname={Bemerkung,Bemerkungen},
+qed=\ensuremath{\Diamond},
+style=remark]{dproof}
+
+% \Crefname{thm}{Satz}{Sätze}
+% \Crefname{lem}{Lemma}{Lemmas}
+
+\addtotheorempostheadhook[thm]{\crefalias{thmlisti}{thm}}
+\addtotheorempostheadhook[lem]{\crefalias{thmlisti}{lem}}
+\addtotheorempostheadhook[rem]{\crefalias{remlisti}{rem}}
+
+% \theoremstyle{definition}
+% \newtheorem{thm}{Satz}[section]
+% \newtheorem{lem}[thm]{Lemma}
+% \newtheorem{prop}[thm]{Proposition}
+% \newtheorem{cor}[thm]{Korollar}
+
+% \newtheorem{defn}[thm]{Definition}
+% \newtheorem{conj}[thm]{Vermutung}
+% \newtheorem{exmp}[thm]{Beispiel}
+
+% % \theoremstyle{remark}
+% \newtheorem{rem}[thm]{Bemerkung}
+% \newtheorem*{note}{Merke}
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+\newcommand{\fracnorm}[3]{%
+    \ensuremath{\frac{\! #1\!}{\! {}_{\phantom{#3}}\norm{#2}_{#3}\!}}%
+}
+\newcommand\coloniff{\vcentcolon\!\iff}
+
+\makeatletter
+\newcommand*{\transpose}{%
+  {\mathpalette\@transpose{}}%
+}
+\newcommand*{\@transpose}[2]{%
+  % #1: math style
+  % #2: unused
+  \raisebox{\depth}{$\m@th#1\intercal$}%
+}
+\makeatother
+
+\newcommand{\stcomp}[1]{{#1}^{\mathsf{c}}} % Mengenkomplement
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\KK}{\mathbb{K}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\OO}{\mathbb{O}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\bb}{\mathcal{B}}
+\newcommand{\cc}{\mathcal{C}}
+\newcommand{\ff}{\mathcal{F}}
+\renewcommand{\ll}{\mathcal{L}}
+\newcommand{\nn}{\mathcal{N}}
+\newcommand{\zz}{\mathcal{Z}}
+
+\newcommand{\Cb}[1]{C_b(#1)}
+\newcommand{\expect}[1]{\EE[#1]}
+\newcommand{\dvar}[1]{\,\mathrm{d}#1}
+\newcommand{\dmeas}[2]{\,#1(\mathrm{d}#2)}
+% \newcommand{\meas}[2]{\,\mathrm{d}#1(#2)}
+\DeclarePairedDelimiter{\sprod}{\langle}{\rangle}	% spitze Klammern
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}		% Betrag
+\DeclareMathOperator{\ggT}{ggT}
+
+\newcommand\phantomarrow[2]{%
+  \setbox0=\hbox{$\displaystyle #1\to$}%
+  \hbox to \wd0{%
+    $#2\mapstochar
+     \cleaders\hbox{$\mkern-1mu\relbar\mkern-3mu$}\hfill
+     \mkern-7mu\rightarrow$}%
+  \,}
+
+\begin{document}
+
+\title{Konvergenzraten des Robbins-Monro-Algorithmus}
+\author{Alexander Schlüter}
+% \thanks{Dozent: Prof.~Dr.~Dereich, Betreuung: Johannes Blank}
+\date{13. Juli 2016}
+% Bachelorseminar Markovketten, WS 15/16
+% {\let\newpage\relax\maketitle}
+\maketitle
+\begin{abstract}
+  Der Robbins-Monro-Algorithmus ist ein iteratives Verfahren zur Bestimmung von
+  Nullstellen einer Funktion, deren Wert nur stochastisch gestört gemessen
+  werden kann. Im letzten Vortrag wurde die fast sichere Konvergenz gegen eine
+  Nullstelle bewiesen. Ziel dieses Vortrages ist es, eine Aussage über die
+  Konvergenzgeschwindigkeit und die Form der Verteilung im Limit ähnlich dem
+  zentralen Grenzwertsatz zu beweisen.
+\end{abstract}
+% \newpage
+\tableofcontents
+% \newpage
+
+\section{Erinnerungen}
+Im Folgenden sei    
+\begin{itemize}
+\item $(\Omega, \ff, P)$ ein Wahrscheinlichkeitsraum und $(\zz,\cc)$ ein messbarer Raum,
+\item $(Z_n)_{n\geq 1}$ eine Folge u.i.v $(\zz, \cc)$-wertiger Zufallsvariablen,
+\item $I\subset\RR$ ein abgeschlossenes Intervall oder $I=\RR$, 
+\item $X_0$ eine von $(Z_n)_{n\geq 1}$ unabhängige $I$-wertige Zufallsvariable,
+\item $(\gamma_n)_{n\geq 1}$ eine Folge in $(0,\infty)$ und
+\item $H:(I\times \zz,\bb(I)\otimes\cc)\to(\RR,\bb(\RR))$ eine messbare
+  Abbildung mit
+  \begin{equation*}
+    H(x,Z_1)\in\ll^1\quad\text{für alle $x\in I$.}
+  \end{equation*}
+\end{itemize}
+
+Der \textbf{Robbins-Monro-Algorithmus} ist die Folge $X=(X_n)_{n\geq 0}$ von
+reellen Zufallsvariablen definiert durch die Rekursion
+\begin{equation}
+  \label{eq:algo}
+  X_{n+1}=X_n+\gamma_{n+1}H(X_n,Z_{n+1})\,,
+\end{equation}
+wobei wir annehmen, dass die Werte immer in $I$ liegen.
+
+Die \textbf{Erwartungswertfunktion} des Algorithmus ist definiert durch
+\begin{equation*}
+ h:I\to\RR,\quad h(x)\coloneqq\expect{H(x,Z_1)}
+\end{equation*}
+und außerdem sei
+\begin{equation*}
+ g:I\to\overline{\RR}_+,\quad g(x)\coloneqq\expect{H(x,Z_1)^2}.
+\end{equation*}
+
+Wir haben gesehen, dass der Robbins-Monro-Algorithmus unter zusätzlichen
+Annahmen fast sicher gegen eine Nullstelle von $h$ konvergiert. Diese Annahmen
+waren
+\begin{enumerate}[label=(\roman*)]
+\item (Downcrossing-Bedingung) $h$ ist stetig und es gibt ein $x_0\in h^{-1}(0)$ mit
+  \begin{equation*}
+   \sup_{x\in I}(x-x_0)h(x)\leq 0\,,
+  \end{equation*}
+\item (Beschränkte Störung) $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine Konstante $C\in\RR_+$ und
+  alle $x\in I$,
+\item (Abnehmende Schrittweiten) $\sum_{n=1}^\infty \gamma_n=\infty$ und $\sum_{n=1}^\infty\gamma_n^2<\infty$.
+\end{enumerate}
+
+\section{Vorbereitungen}
+\begin{defn}
+  % Es sei $K$ ein Markov-Kern und $(K_n)_{n\geq 1}$ eine Folge von Markov-Kernen von
+  % $(\Omega, \ff)$ nach $(\RR^d, \bb(\RR^d))$. Außerdem sei $(X_n)_{n\geq 1}$
+  % eine Folge von Zufallsvariablen von $(\Omega, \ff)$ nach $(\RR^d, \bb(\RR^d))$.
+  % \begin{thmlist}
+  % \item Die Folge $(K_n)_{n\geq 1}$ heißt \textbf{schwach konvergent} gegen $K$ und wir
+  %   schreiben
+  %   \begin{equation*}
+  %     K_n\overset{w}{\longrightarrow} K\, ,
+  %   \end{equation*}
+  %   falls für alle $f\in\Li{P}$ und $h\in\Cb{\RR^d}$ gilt
+  %   \begin{equation*}
+  %    \lim_{n\to\infty}\int f(\omega)h(x)\, P\otimes K_n(\mathrm{d}(\omega,x)) = \int f(\omega)h(x)\, P\otimes K(\mathrm{d}(\omega,x))\, .
+  %   \end{equation*}
+  %   \item Die Folge $(X_n)_{n\geq 1}$ heißt \textbf{stabil konvergent} gegen $K$
+  %     und wir schreiben
+  %     \begin{equation*}
+  %       X_n\longrightarrow K
+  %     \end{equation*}
+  % \end{thmlist}
+  Es sei $(Y_n)_{n\geq 1}$ eine Folge von Zufallsvariablen von $(\Omega, \ff)$
+  nach $(\RR^d, \bb(\RR^d))$ und $\nu$ ein Wahrscheinlichkeitsmaß auf
+  $\bb(\RR^d)$. $(Y_n)_{n\geq 1}$ heißt \textbf{mischend konvergent} gegen $\nu$
+  und wir schreiben
+  \begin{equation*}
+    Y_n\longrightarrow\nu \quad\textit{mischend}, 
+  \end{equation*}
+  falls für alle $f\in\ll^1(P)$ und $h\in\Cb{\RR^d}$ gilt
+  \begin{equation*}
+   \lim_{n\to\infty} \expect{f\cdot h(Y_n)} = \int f\dvar{P}\int h\dvar{\nu}\,.
+  \end{equation*}
+\end{defn}
+\begin{rem}
+ Durch Wahl von $f=1$ folgt aus der mischenden Konvergenz die bekannte
+ Konvergenz in Verteilung. 
+\end{rem}
+\begin{thm}[Stabiler CLT]
+ Seien $\gamma_n=C_1/(C_2+n)$ für $n\geq 1$ mit reellen Konstanten $C_1>0$,
+ $C_2\geq 0$ und $x_0\in h^{-1}(0)$. Die folgenden Bedingungen seien erfüllt:
+ \begin{thmasslist}
+ \item $X_n\to x_0$ f.s. für $n\to\infty$.
+ \item $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine Konstante $C\in\RR_+$ und
+   alle $x\in I$,
+ \item $g$ sei stetig in $x_0$, h sei differenzierbar in $x_0$, $h'(x_0)<0$ und
+   \begin{equation*}
+    h(x) = h'(x_0)(x-x_0) + \mathcal{O}((x-x_0)^2)\quad\text{für $x\to x_0$}\,,
+   \end{equation*}
+ \item Es existieren $\epsilon,\delta >0$ sodass $H(x,Z_1)\in\ll^{2+\delta}$ für
+   alle $x\in I$ und 
+   \begin{equation*}
+    \sup_{\abs{x-x_0}\leq\epsilon}\expect{\abs{H(x,Z_1)}^{2+\delta}}<\infty\,.
+   \end{equation*}
+ \end{thmasslist}
+ Dann gilt für $n\to\infty$:
+ \begin{thmlist}
+ \item Falls $\abs{h'(x_0)}C_1>1/2$:
+   \begin{equation*}
+    \sqrt{n}(X_n-x_0)\to\nn\left( 0,\frac{g(x_0)C_1^2}{2\abs{h'(x_0)}C_1-1} \right)\quad\textit{mischend,}
+   \end{equation*}
+ \item Falls $\abs{h'(x_0)}C_1=1/2$:
+   \begin{equation*}
+    \sqrt{\frac{n}{\log n}}(X_n-x_0)\to\nn\left( 0,g(x_0)C_1^2 \right)\quad\textit{mischend,}
+   \end{equation*}
+ \item Falls $\abs{h'(x_0)}C_1<1/2$: 
+   \begin{equation*}
+     n^{\abs{h'(x_o)}C_1}(X_n-x_0)\to\xi \quad\text{f.s.}
+   \end{equation*}
+   für eine reelle Zufallsvariable $\xi$, die von $X_0$ abhängt.
+ \end{thmlist}
+\end{thm}
+\begin{rem}
+  Downcrossing etc.
+\end{rem}
+\printbibliography
+
+\end{document}
