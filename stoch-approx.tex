@@ -1,10 +1,11 @@
 \documentclass[ngerman,a4paper,11pt]{scrartcl}
-\usepackage{lmodern}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{lmodern}
 \usepackage{babel}
 \usepackage{csquotes}
+\usepackage{xfrac}
 \usepackage{bbm}
-\usepackage[T1]{fontenc}
 \usepackage{braket}
 \usepackage{enumitem}
 \usepackage[shortcuts]{extdash}
@@ -24,7 +25,7 @@
 \newlist{remlist}{enumerate}{1}
 \setlist[remlist]{label=(\arabic*), ref=\thethm (\arabic*),noitemsep}
 \newlist{thmasslist}{enumerate}{1}
-\setlist[thmasslist]{label=(\alph*), ref=\thethm (\alph*),noitemsep}
+\setlist[thmasslist]{label=(\alph*),ref=(\alph*),noitemsep}
 
 \newtheoremstyle{break}{}{}{}{}{\bfseries}{}{\newline}{}
 \declaretheoremstyle[headpunct=.:]{claim}
@@ -35,6 +36,13 @@ name=Satz,
 % Refname={Satz,Sätze},
 style=definition,
 numberwithin=section]{thm}
+
+\declaretheorem[
+name=Korollar,
+%refname={theorem,theorems},        %Lower Case Versions of Theorem Type
+% Refname={Satz,Sätze},
+style=definition,
+numberwithin=section]{cor}
 
 \declaretheorem[
 name=Satz,
@@ -134,6 +142,7 @@ style=remark]{dproof}
 \newcommand{\CC}{\mathbb{C}}
 \newcommand{\EE}{\mathbb{E}}
 \newcommand{\FF}{\mathbb{F}}
+\newcommand{\GG}{\mathbb{G}}
 \newcommand{\HH}{\mathbb{H}}
 \newcommand{\KK}{\mathbb{K}}
 \newcommand{\NN}{\mathbb{N}}
@@ -144,12 +153,14 @@ style=remark]{dproof}
 \newcommand{\bb}{\mathcal{B}}
 \newcommand{\cc}{\mathcal{C}}
 \newcommand{\ff}{\mathcal{F}}
+\renewcommand{\gg}{\mathcal{G}}
 \renewcommand{\ll}{\mathcal{L}}
 \newcommand{\nn}{\mathcal{N}}
 \newcommand{\zz}{\mathcal{Z}}
 
 \newcommand{\Cb}[1]{C_b(#1)}
 \newcommand{\expect}[1]{\EE[#1]}
+\newcommand{\condexp}[2]{\EE[#1\,|\,#2]}
 \newcommand{\dvar}[1]{\,\mathrm{d}#1}
 \newcommand{\dmeas}[2]{\,#1(\mathrm{d}#2)}
 % \newcommand{\meas}[2]{\,\mathrm{d}#1(#2)}
@@ -193,6 +204,7 @@ Im Folgenden sei
 \item $(Z_n)_{n\geq 1}$ eine Folge u.i.v $(\zz, \cc)$-wertiger Zufallsvariablen,
 \item $I\subset\RR$ ein abgeschlossenes Intervall oder $I=\RR$, 
 \item $X_0$ eine von $(Z_n)_{n\geq 1}$ unabhängige $I$-wertige Zufallsvariable,
+\item $\ff_n=\sigma(X_0,Z_1,\dotsc,Z_n)$ und $\FF=(\ff_n)_{n\geq 0}$ eine Filtration,
 \item $(\gamma_n)_{n\geq 1}$ eine Folge in $(0,\infty)$ und
 \item $H:(I\times \zz,\bb(I)\otimes\cc)\to(\RR,\bb(\RR))$ eine messbare
   Abbildung mit
@@ -201,8 +213,8 @@ Im Folgenden sei
   \end{equation*}
 \end{itemize}
 
-Der \textbf{Robbins-Monro-Algorithmus} ist die Folge $X=(X_n)_{n\geq 0}$ von
-reellen Zufallsvariablen definiert durch die Rekursion
+Der \textbf{Robbins-Monro-Algorithmus} ist der $\FF$-adaptierte reelle Prozess
+$X=(X_n)_{n\geq 0}$ definiert durch die Rekursion
 \begin{equation}
   \label{eq:algo}
   X_{n+1}=X_n+\gamma_{n+1}H(X_n,Z_{n+1})\,,
@@ -218,19 +230,44 @@ und außerdem sei
  g:I\to\overline{\RR}_+,\quad g(x)\coloneqq\expect{H(x,Z_1)^2}.
 \end{equation*}
 
-Wir haben gesehen, dass der Robbins-Monro-Algorithmus unter zusätzlichen
-Annahmen fast sicher gegen eine Nullstelle von $h$ konvergiert. Diese Annahmen
-waren
-\begin{enumerate}[label=(\roman*)]
-\item (Downcrossing-Bedingung) $h$ ist stetig und es gibt ein $x_0\in h^{-1}(0)$ mit
-  \begin{equation*}
-   \sup_{x\in I}(x-x_0)h(x)\leq 0\,,
-  \end{equation*}
-\item (Beschränkte Störung) $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine Konstante $C\in\RR_+$ und
-  alle $x\in I$,
-\item (Abnehmende Schrittweiten) $\sum_{n=1}^\infty \gamma_n=\infty$ und $\sum_{n=1}^\infty\gamma_n^2<\infty$.
-\end{enumerate}
-
+\begin{rem}
+  \label{rem:11.2}
+  Wir haben gesehen, dass der Robbins-Monro-Algorithmus unter zusätzlichen
+  Annahmen fast sicher gegen eine Nullstelle von $h$ konvergiert. Diese Annahmen
+  waren
+  \begin{enumerate}[label=(\alph*)]
+  \item (Downcrossing-Bedingung) $h$ ist stetig und es gibt ein $x_0\in
+    h^{-1}(0)$ mit
+    \begin{equation*}
+      \sup_{x\in I}(x-x_0)h(x)\leq 0\,,
+    \end{equation*}
+  \item (Beschränkte Störung) $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine
+    Konstante $C\in\RR_+$ und alle $x\in I$,\label{rem:beschr}
+  \item (Abnehmende Schrittweiten) $\sum_{n=1}^\infty \gamma_n=\infty$ und
+    $\sum_{n=1}^\infty\gamma_n^2<\infty$.
+  \end{enumerate}
+\end{rem}
+Wir benötigen noch folgende Resultate vom letzten Mal:
+\begin{lem}[Doob-Zerlegung]\label{lem:doob}
+ Unter den o.g. Bedingungen ist $X$ ein $\ll^2$-Prozess und für die
+ Doob-Zerlegung $X=N+A$ in ein Martinal $N=(N_n)_{n\geq 0}$ und einen
+ previsiblen Prozess $A=(A_n)_{n\geq 0}$ gilt
+ \begin{align*}
+  N_n=X_0+\sum_{j=1}^n\gamma_j(H(X_{j-1},Z_j)-h(X_{j-1})) \\
+  \sprod{N}_n=\sum_{j=1}^n\gamma_j^2(g(X_{j-1})-h(X_{j-1})^2)
+ \end{align*}
+ für $n\geq 0$. Außerdem ist $N$ ein $\ll^2$-Martingal.
+\end{lem}
+\begin{lem}[Substitution bei Unabhängigkeit]
+ Für $n\geq 1$ und jede Funktion $f:(I\times \zz,\bb(I)\otimes\cc)\to(\RR,\bb(\RR))$ mit
+ wohldefiniertem Integral bezüglich $P^{(X_{n-1},Z_n)}$ gilt
+ \begin{equation*}
+  \condexp{f(X_{n-1}, Z_n)}{\ff_{n-1}}(\cdot)=\int f(X(\cdot), z)\dvar{P^{Z_1}(z)}\quad\text{fast sicher.}
+ \end{equation*}
+\end{lem}
+\begin{proof}
+ $Z_n$  ist unabhängig von $\ff_{n-1}$, also ist die Aussage vom letzten Mal anwendbar.
+\end{proof}
 \section{Vorbereitungen}
 \begin{defn}
   % Es sei $K$ ein Markov-Kern und $(K_n)_{n\geq 1}$ eine Folge von Markov-Kernen von
@@ -268,26 +305,199 @@ waren
  Durch Wahl von $f=1$ folgt aus der mischenden Konvergenz die bekannte
  Konvergenz in Verteilung. 
 \end{rem}
+\begin{lem}\label{lem:misch}
+  Sei $(Y_n)_{n\geq 1}$ eine Folge von reellen Zufallsvariablen und $\nu$ ein
+  Wahrscheinlichkeitsmaß auf $(\RR,\bb(\RR))$ mit $Y_n\to\nu$ \textit{mischend}
+  für $n\to\infty$. Außerdem sei $(Z_n)_{n\geq 1}$ eine Folge von reellen
+  Zufallsvariablen mit $Z_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
+\begin{equation*}
+ (Y_n,Z_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
+\end{equation*}
+\end{lem}
+\begin{proof}
+ Siehe \cite[Korollar~5.29(a)]{lpw}.
+\end{proof}
+\begin{cor}\label{cor:mischsum}
+  Sei $(Y_n)_{n\geq 1}$ eine Folge von reellen Zufallsvariablen und $\nu$ ein
+  Wahrscheinlichkeitsmaß auf $(\RR,\bb(\RR))$ mit $Y_n\to\nu$ \textit{mischend}
+  für $n\to\infty$. Außerdem sei $(Z_n)_{n\geq 1}$ eine Folge von reellen
+  Zufallsvariablen mit $Z_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
+\begin{equation*}
+ Y_n + Z_n\to\nu\quad\textit{mischend.}
+\end{equation*}
+\end{cor}
+\begin{proof}
+  Es seien $f\in\ll^1(P)$ und $h\in\Cb{\RR}$ beliebig. Dann ist
+  $h':\RR^2\to\RR$, $h'(y,z)\coloneqq h(y+z)$ in $\Cb{\RR^2}$. Nach
+  \cref{lem:misch} gilt
+\begin{equation*}
+ (Y_n,Z_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
+\end{equation*}
+Nach Definition der mischenden Konvergenz folgt
+\begin{align*}
+  \expect{f\cdot h(Y_n+Z_n)}=\expect{f\cdot h'(Y_n,Z_n}&\to\int f\dvar{P}\int h'(y,z) \dvar{\nu\otimes\delta_0(y,z)}\\
+&=\int f\dvar{P}\int h(y+0) \dvar{\nu(y)}\,.
+\end{align*}
+\end{proof}
 \begin{thm}[Stabiler CLT]
+ Es sei $Y=(Y_n)_{n\geq 0}$  ein $\ll^2$-Martingal bezüglich einer Filtration
+ $(\gg_n)_{n\geq 0}$ und $(a_n)_{n\geq 1}$ eine
+ Folge in $(0,\infty)$ mit $a_n\to\infty$. Die folgenden Bedingungen seien erfüllt:
+ \begin{thmasslist}
+ \item Es existiert eine Konstante $v>0$ mit 
+   \begin{equation*}
+     \frac{\sprod{Y}_n}{a_n^2}\longrightarrow v\quad\textit{in Wahrscheinlichkeit}
+   \end{equation*}
+   für $n\to\infty$,
+ \item ($\GG$-bedingte Lyapunov-Bedingung) Es existiert ein $\delta >0$, sodass 
+   \begin{equation*}
+    \frac{1}{a_n^{2+\delta}} \sum_{j=1}^n\condexp{\abs{\Delta Y_j}^{2+\delta}}{\gg_{j-1}}\to 0\quad\textit{in Wahrscheinlichkeit}
+   \end{equation*}
+für ${n\to\infty}$.
+ \end{thmasslist}
+Dann gilt für ${n\to\infty}$:
+\begin{equation*}
+ \frac{Y_n}{a_n}\to\nn(0,v)\quad\textit{mischend.} 
+\end{equation*}
+\end{thm}
+\begin{proof}
+ Siehe \cite[Satz~5.31 und Bemerkung~5.32(a)]{lpw}.
+\end{proof}
+\begin{lem}[Diskrete Regel von de~l'Hospital]
+ Sei $(a_n)_{n\geq 1}$ eine Folge in $\RR$ und $(b_n)_{n\geq 1}$ eine Folge positiver reeller Zahlen, sodass 
+ \begin{thmasslist}
+ \item 
+     $\sum_{n=1}^\infty b_n=\infty$ und
+ \item es existiert $c\in\RR$ mit $\lim_{n\to\infty}a_n/b_n=c$
+ \end{thmasslist}
+ Dann gilt
+ \begin{equation*}
+  \lim_{n\to\infty} \frac{\sum_{j=1}^na_j}{\sum_{j=1}^nb_j}=c\,.
+ \end{equation*}
+\end{lem}
+\begin{proof}
+ Seien $\varepsilon >0$ und $n_0\in\NN$ mit $\abs{a_n/b_n-c}\leq\epsilon$
+ für alle $n>n_0$. Dann gilt für $n>n_0$
+ \begin{align*}
+  \abs*{\frac{\sum_{j=1}^na_j}{\sum_{j=1}^nb_j}-c}&\leq\frac{\sum_{j=1}^nb_j\abs{a_j/b_j-c}}{\sum_{j=1}^nb_j} \\
+&=\frac{\sum_{j=1}^{n_0}b_j\abs{a_j/b_j-c}}{\sum_{j=1}^nb_j}+\frac{\sum_{j=n_0+1}^nb_j\abs{a_j/b_j-c}}{\sum_{j=1}^nb_j} \\
+&\leq\frac{\sum_{j=1}^{n_0}b_j\abs{a_j/b_j-c}}{\sum_{j=1}^nb_j}+\varepsilon\,.
+ \end{align*}
+Es folgt
+\begin{equation*}
+  \limsup_{n\to\infty} \abs*{\frac{\sum_{j=1}^na_j}{\sum_{j=1}^nb_j}-c}\leq\varepsilon
+\end{equation*}
+und da $\varepsilon$ beliebig war folgt die Behauptung.
+\end{proof}
+\begin{lem}[Kronecker, WT Lem. 4.28]
+ Sei $(a_n)_{n\geq 1}$ eine monoton wachsende Folge positiver Zahlen mit
+ $\lim_{n\to\infty}a_n=\infty$ und sei $(b_n)_{n\geq 1}$ eine Folge reeller
+ Zahlen. Konvergiert $\sum_{j=1}^\infty b_j/a_j$ in $\RR$, so folgt
+ \begin{equation*}
+  \lim_{n\to\infty} \frac{1}{a_n}\sum_{j=1}^nb_j=0\,.
+ \end{equation*}
+\end{lem}
+\begin{lem}
+  \begin{thmlist}
+  \item Für reelle Konstanten $b\geq 0$ und $a>-b-1$ existiert $L\in(0,\infty)$,
+    sodass\label{lem:sim:prod}
+    \begin{equation*}
+      \prod_{j=1}^n\left( 1+\frac{a}{b+j} \right) \sim Ln^a\quad\text{für $n\to\infty$.} 
+    \end{equation*}
+  \item Für $b>-1$ gilt
+    \begin{equation*}
+      \sum_{j=1}^nj^b \sim \frac{n^{b+1}}{b+1}\quad\text{für $n\to\infty$} 
+    \end{equation*}
+und für $b=-1$\label{lem:sim:sum}
+    \begin{equation*}
+      \sum_{j=1}^nj^{-1} \sim \log n\quad\text{für $n\to\infty$.} 
+    \end{equation*}
+  \end{thmlist}
+\end{lem}
+\begin{proof}
+  \begin{thmlist}
+  \item
+Die Gammafunktion hat die Eigenschaft 
+\begin{equation*}
+ \Gamma(t+1)=t\Gamma(t)
+\end{equation*}
+für eine positive reelle Zahl $t$. Deshalb gilt
+\begin{equation*}
+  \prod_{j=1}^n\left( 1+\frac{a}{b+j} \right) =\frac{\prod_{j=1}^n(a+b+j)}{\prod_{j=1}^n(b+j)}=
+\frac{\Gamma(a+b+n+1)}{\Gamma(a+b+1)}\frac{\Gamma(b+1)}{\Gamma(b+n+1)} 
+\end{equation*}
+Wir identifizieren den von $n$ unabhängigen Faktor
+\begin{equation*}
+ L\coloneqq\frac{\Gamma(b+1)}{\Gamma(a+b+1)}
+\end{equation*}
+und untersuchen den übrigen Term. Stirlings Formel für die Gammafunktion
+\begin{equation*}
+ \Gamma(t)\sim\sqrt{2\pi} t^{t-1/2}e^{-t},\quad t\to\infty
+\end{equation*}
+liefert
+\begin{align*}
+ \frac{\Gamma(a+b+n+1)}{\Gamma(b+n+1)}&\sim (a+b+n+1)^a\left( \frac{a+b+n+1}{b+n+1} \right)^{b+n+1/2}e^{-a} \\
+&\sim n^a\left( 1+\frac{a}{b+n+1} \right)^{b+n+1}e^{-a}\,. %\sim n^a
+\end{align*}
+Im letzten Schritt wurde genutzt, dass
+\begin{equation*}
+ \lim_{n\to\infty}\left( \frac{a+b+n+1}{n} \right)^a=1\quad\text{und}\quad\lim_{n\to\infty}\sqrt{\frac{b+n+1}{a+b+n+1}}=1\,.
+\end{equation*}
+Schließlich folgt mit
+\begin{equation*}
+ \lim_{n\to\infty}\left( 1+\frac{a}{b+n+1} \right)^{b+n+1}=e^a
+\end{equation*}
+die Behauptung.
+\item Falls $-1<b\leq 0$, so ist die Abbildung $(0,\infty)\to\RR$, $x\mapsto
+  x^b$ monoton fallend. Also gilt für $j\in\NN$
+  \begin{equation*}
+   (j+1)\leq\int_j^{j+1}x^b\dvar{x}\leq j^b
+  \end{equation*}
+  und deshalb
+  \begin{equation*}
+   \frac{(n+1)^{b+1}-1}{b+1}=\int_1^{n+1}x^b\dvar{x}\leq\sum_{j=1}^nj^b\leq\int_0^nx^b\dvar{x}=\frac{n^{b+1}}{b+1}\,.
+  \end{equation*}
+Die Behauptung folgt, da
+\begin{equation*}
+ \lim_{n\to\infty} \frac{(n+1)^{b+1}-1}{b+1}\cdot\frac{b+1}{n^{b+1}}=1\,.
+\end{equation*}
+Mit demselben Argument bekommt man den Fall $b=-1$:
+\begin{equation*}
+   \log(n+1)=\int_1^{n+1}x^b\dvar{x}\leq\sum_{j=1}^nj^b\leq 1+\int_1^nx^b\dvar{x}=1+\log(n)
+\end{equation*}
+und
+\begin{equation*}
+ \lim_{n\to\infty}\frac{\log(n+1)}{\log(n)} = 1 = \lim_{n\to\infty}\frac{1+\log(n)}{\log(n)}\,.
+\end{equation*}
+  Falls $b>0$, so ist $x\mapsto x^b$ monoton wachsend, also
+  \begin{equation*}
+   j^b\leq\int_j^{j+1}x^b\dvar{x}\leq (j+1)^b
+  \end{equation*}
+  und die Abschätzung ist analog zu oben.
+  \end{thmlist}
+\end{proof}
+\section{Konvergenzraten}
+\begin{thm}[Konvergenzraten, stabiler CLT]
+ \label{thm:haupt}
  Seien $\gamma_n=C_1/(C_2+n)$ für $n\geq 1$ mit reellen Konstanten $C_1>0$,
  $C_2\geq 0$ und $x_0\in h^{-1}(0)$. Die folgenden Bedingungen seien erfüllt:
  \begin{thmasslist}
  \item $X_n\to x_0$ f.s. für $n\to\infty$.
  \item $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine Konstante $C\in\RR_+$ und
-   alle $x\in I$,
- \item $g$ sei stetig in $x_0$, h sei differenzierbar in $x_0$, $h'(x_0)<0$ und
+   alle $x\in I$,\label{thm:haupt:b}
+ \item $g$ sei stetig in $x_0$, h sei differenzierbar in $x_0$, $h'(x_0)<0$ und\label{thm:haupt:c}
    \begin{equation*}
     h(x) = h'(x_0)(x-x_0) + \mathcal{O}((x-x_0)^2)\quad\text{für $x\to x_0$}\,,
    \end{equation*}
- \item Es existieren $\epsilon,\delta >0$ sodass $H(x,Z_1)\in\ll^{2+\delta}$ für
+ \item Es existieren $\varepsilon,\delta >0$ sodass $H(x,Z_1)\in\ll^{2+\delta}$ für
    alle $x\in I$ und 
    \begin{equation*}
-    \sup_{\abs{x-x_0}\leq\epsilon}\expect{\abs{H(x,Z_1)}^{2+\delta}}<\infty\,.
+    \sup_{\abs{x-x_0}\leq\varepsilon}\expect{\abs{H(x,Z_1)}^{2+\delta}}<\infty\,.
    \end{equation*}
  \end{thmasslist}
  Dann gilt für $n\to\infty$:
- \begin{thmlist}
- \item Falls $\abs{h'(x_0)}C_1>1/2$:
+ \begin{enumerate}[label=(\roman*)]
+ \item Falls $\abs{h'(x_0)}C_1>1/2$:\label{thm:haupt:i}
    \begin{equation*}
     \sqrt{n}(X_n-x_0)\to\nn\left( 0,\frac{g(x_0)C_1^2}{2\abs{h'(x_0)}C_1-1} \right)\quad\textit{mischend,}
    \end{equation*}
@@ -300,11 +510,84 @@ waren
      n^{\abs{h'(x_o)}C_1}(X_n-x_0)\to\xi \quad\text{f.s.}
    \end{equation*}
    für eine reelle Zufallsvariable $\xi$, die von $X_0$ abhängt.
- \end{thmlist}
+ \end{enumerate}
 \end{thm}
 \begin{rem}
   Downcrossing etc.
 \end{rem}
+\begin{proof}
+  Hier wird nur ein Teil vom Fall $\abs{h'(x_0)}C_1>1/2$ bewiesen. Für
+  den vollen Beweis siehe \cite[Satz~11.4]{lpw}.
+  
+Wie wir letzte Woche gesehen haben, folgt aus \ref{thm:haupt:b}, dass $X$ ein
+$\ll^2$-Prozess ist. Sei
+\begin{equation*}
+ a\coloneqq -h'(x_0)=\abs{h'(x_o)}\,. 
+\end{equation*}
+Nach \ref{thm:haupt:c} gilt $a>0$. Man wähle $n_0\in\NN$ mit $a\gamma_{n_0}<1$ und
+definiere für $n\geq 0$
+\begin{equation*}
+ \beta_n\coloneqq\prod_{j=n_0}^n(1-a\gamma_j) =\prod_{j=1}^{n-n_0+1}(1-a\gamma_{j+n_0-1})\,.
+\end{equation*}
+Insbesondere gilt also $\beta_0=\dotsb=\beta_{n_0-1}=1$ und nach \cref{lem:sim:prod}
+\begin{equation*}
+ \beta_n\sim Ln^{-aC_1}\,
+\end{equation*}
+für $n\to\infty$ mit einer Konstanten $L\in(0,\infty)$. Wegen $\gamma_n\sim
+C_1/n$ folgt
+\begin{equation}
+  \frac{\gamma_n}{\beta_n}\sim\frac{C_1}{L}n^{aC_1-1}\label{eq:gammabeta}
+\end{equation}
+Mit der Doob-Zerlegung $X=N+A$ aus \cref{lem:doob} bekommen wir
+\begin{align*}
+  \sqrt{n}(X_n-x_0)&=\sqrt{n}\beta_n\left(X_0-x_0+\sum_{j=1}^n\frac{1}{\beta_j}(X_j - X_{j-1} + X_{j-1})-\frac{1}{\beta_{j-1}}X_{j-1}-\frac{x_0}{\beta_j}+\frac{x_0}{\beta_{j-1}}\right)\nonumber \\
+&=\phantom{+}\sqrt{n}\beta_n(X_0-x_0)\label{eq:1}\\
+&\phantom{=}+\sqrt{n}\beta_n\sum_{j=1}^n\frac{1}{\beta_j}\Delta N_j\\
+&\phantom{=}+\sqrt{n}\beta_n\sum_{j=1}^n\left(\frac{1}{\beta_j}\Delta A_j+(X_{j-1}-x_0)(\frac{1}{\beta_j}-\frac{1}{\beta_{j-1}})\right)\,. 
+\end{align*}
+Wir wollen die drei Summanden einzeln auf ihr Verhalten für $n\to\infty$
+untersuchen. Definiere dazu für $n\geq 0$
+\begin{align*}
+ M_n&\coloneqq \sum_{j=1}^n\frac{1}{\beta_j}\Delta N_j\\
+B_n&\coloneqq\sum_{j=1}^n\left(\frac{1}{\beta_j}\Delta A_j+(X_{j-1}-x_0)(\frac{1}{\beta_j}-\frac{1}{\beta_{j-1}})\right)\,.
+\end{align*}
+Da $\sqrt{n}\beta_n\sim Ln^{-aC_1+1/2}\to 0$ gilt auch
+$\sqrt{n}\beta_n(X_0-x_0)\to 0$ punktweise.
+
+Es gilt auch
+$\sqrt{n}\beta_nB_n\to 0$ fast sicher, allerdings ist der Beweis nicht trivial
+und kann nachgelesen werden in \cite[Satz~11.4]{lpw}. Er basiert auf der Idee,
+die Zuwüchse $\Delta B_n$ für große $n$ gegen $(X_n-x_0)^2$ abzuschätzen. Dazu
+wird Voraussetzung~\ref{thm:haupt:c} genutzt.
+
+Im Folgenden wird gezeigt, dass
+\begin{equation*}
+ \sqrt{n}\beta_nM_n\to\nn\left( 0,\frac{g(x_0)C_1^2}{2aC_1-1} \right)\quad\textit{mischend,}
+\end{equation*}
+denn dann folgt die Behauptung mittels \cref{cor:mischsum}. \\
+$M=(M_n)_{n\geq 0}$
+ist ein $\ll^2$-Martingal, da $N$ eins ist. Es gilt nach der Darstellung für
+$\sprod{N}$ aus \cref{lem:doob}
+\begin{align*}
+ \Delta\sprod{M}_n&=\condexp{(\Delta M_n)^2}{\ff_{n-1}}=\frac{1}{\beta_j^2}\condexp{(\Delta N_n)^2}{\ff_{n-1}}\\
+&=\frac{\gamma_j^2}{\beta_j^2}(g(X_{j-1})-h(X_{j-1})^2)
+\end{align*}
+für $n\geq 0$. Wegen der Stetigkeit von $h$ und $g$ in $x_0$ gilt
+\begin{equation*}
+ g(X_{n-1})-h(X_{n-1})^2\to g(x_0)-h(x_0)^2=g(x_0)\quad\text{f.s.,}
+\end{equation*}
+und zusammen mit \cref{eq:gammabeta} bekommt man
+\begin{equation*}
+ \frac{\Delta\sprod{M}_n}{n^{2aC_1-2}}\to\frac{g(x_0)C_1^2}{L^2}\quad\text{f.s.} 
+\end{equation*}
+für $n\to\infty$.
+\end{proof}
+\begin{rem}
+ Optimale Schrittweite 
+\end{rem}
+\begin{exmp}
+ Mittelwert und Quantil 
+\end{exmp}
 \printbibliography
 
 \end{document}
