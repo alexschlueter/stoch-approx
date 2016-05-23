@@ -156,7 +156,10 @@ style=remark]{dproof}
 \renewcommand{\gg}{\mathcal{G}}
 \renewcommand{\ll}{\mathcal{L}}
 \newcommand{\nn}{\mathcal{N}}
+\newcommand{\vv}{\mathcal{V}}
 \newcommand{\zz}{\mathcal{Z}}
+\newcommand{\zspace}{V}
+\newcommand{\zsigma}{\vv}
 
 \newcommand{\Cb}[1]{C_b(#1)}
 \newcommand{\expect}[1]{\EE[#1]}
@@ -200,13 +203,13 @@ style=remark]{dproof}
 \section{Erinnerungen}
 Im Folgenden sei    
 \begin{itemize}
-\item $(\Omega, \ff, P)$ ein Wahrscheinlichkeitsraum und $(\zz,\cc)$ ein messbarer Raum,
-\item $(Z_n)_{n\geq 1}$ eine Folge u.i.v $(\zz, \cc)$-wertiger Zufallsvariablen,
+\item $(\Omega, \ff, P)$ ein Wahrscheinlichkeitsraum und $(\zspace,\zsigma)$ ein messbarer Raum,
+\item $(Z_n)_{n\geq 1}$ eine Folge u.i.v $(\zspace, \zsigma)$-wertiger Zufallsvariablen,
 \item $I\subset\RR$ ein abgeschlossenes Intervall oder $I=\RR$, 
 \item $X_0$ eine von $(Z_n)_{n\geq 1}$ unabhängige $I$-wertige Zufallsvariable,
 \item $\ff_n=\sigma(X_0,Z_1,\dotsc,Z_n)$ und $\FF=(\ff_n)_{n\geq 0}$ eine Filtration,
 \item $(\gamma_n)_{n\geq 1}$ eine Folge in $(0,\infty)$ und
-\item $H:(I\times \zz,\bb(I)\otimes\cc)\to(\RR,\bb(\RR))$ eine messbare
+\item $H:(I\times \zspace,\bb(I)\otimes\zsigma)\to(\RR,\bb(\RR))$ eine messbare
   Abbildung mit
   \begin{equation*}
     H(x,Z_1)\in\ll^1\quad\text{für alle $x\in I$.}
@@ -253,13 +256,13 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
  Doob-Zerlegung $X=N+A$ in ein Martinal $N=(N_n)_{n\geq 0}$ und einen
  previsiblen Prozess $A=(A_n)_{n\geq 0}$ gilt
  \begin{align*}
-  N_n=X_0+\sum_{j=1}^n\gamma_j(H(X_{j-1},Z_j)-h(X_{j-1})) \\
-  \sprod{N}_n=\sum_{j=1}^n\gamma_j^2(g(X_{j-1})-h(X_{j-1})^2)
+  N_n&=X_0+\sum_{j=1}^n\gamma_j(H(X_{j-1},Z_j)-h(X_{j-1})) \\
+  \sprod{N}_n&=\sum_{j=1}^n\gamma_j^2(g(X_{j-1})-h(X_{j-1})^2)
  \end{align*}
  für $n\geq 0$. Außerdem ist $N$ ein $\ll^2$-Martingal.
 \end{lem}
 \begin{lem}[Substitution bei Unabhängigkeit]
- Für $n\geq 1$ und jede Funktion $f:(I\times \zz,\bb(I)\otimes\cc)\to(\RR,\bb(\RR))$ mit
+ Für $n\geq 1$ und jede Funktion $f:(I\times \zspace,\bb(I)\otimes\zsigma)\to(\RR,\bb(\RR))$ mit
  wohldefiniertem Integral bezüglich $P^{(X_{n-1},Z_n)}$ gilt
  \begin{equation*}
   \condexp{f(X_{n-1}, Z_n)}{\ff_{n-1}}(\cdot)=\int f(X(\cdot), z)\dvar{P^{Z_1}(z)}\quad\text{fast sicher.}
@@ -308,10 +311,10 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
 \begin{lem}\label{lem:misch}
   Sei $(Y_n)_{n\geq 1}$ eine Folge von reellen Zufallsvariablen und $\nu$ ein
   Wahrscheinlichkeitsmaß auf $(\RR,\bb(\RR))$ mit $Y_n\to\nu$ \textit{mischend}
-  für $n\to\infty$. Außerdem sei $(Z_n)_{n\geq 1}$ eine Folge von reellen
-  Zufallsvariablen mit $Z_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
+  für $n\to\infty$. Außerdem sei $(U_n)_{n\geq 1}$ eine Folge von reellen
+  Zufallsvariablen mit $U_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
 \begin{equation*}
- (Y_n,Z_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
+ (Y_n,U_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
 \end{equation*}
 \end{lem}
 \begin{proof}
@@ -320,10 +323,10 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
 \begin{cor}\label{cor:mischsum}
   Sei $(Y_n)_{n\geq 1}$ eine Folge von reellen Zufallsvariablen und $\nu$ ein
   Wahrscheinlichkeitsmaß auf $(\RR,\bb(\RR))$ mit $Y_n\to\nu$ \textit{mischend}
-  für $n\to\infty$. Außerdem sei $(Z_n)_{n\geq 1}$ eine Folge von reellen
-  Zufallsvariablen mit $Z_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
+  für $n\to\infty$. Außerdem sei $(U_n)_{n\geq 1}$ eine Folge von reellen
+  Zufallsvariablen mit $U_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
 \begin{equation*}
- Y_n + Z_n\to\nu\quad\textit{mischend.}
+ Y_n + U_n\to\nu\quad\textit{mischend.}
 \end{equation*}
 \end{cor}
 \begin{proof}
@@ -331,11 +334,11 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
   $h':\RR^2\to\RR$, $h'(y,z)\coloneqq h(y+z)$ in $\Cb{\RR^2}$. Nach
   \cref{lem:misch} gilt
 \begin{equation*}
- (Y_n,Z_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
+ (Y_n,U_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
 \end{equation*}
 Nach Definition der mischenden Konvergenz folgt
 \begin{align*}
-  \expect{f\cdot h(Y_n+Z_n)}=\expect{f\cdot h'(Y_n,Z_n}&\to\int f\dvar{P}\int h'(y,z) \dvar{\nu\otimes\delta_0(y,z)}\\
+  \expect{f\cdot h(Y_n+U_n)}=\expect{f\cdot h'(Y_n,U_n}&\to\int f\dvar{P}\int h'(y,u) \dvar{\nu\otimes\delta_0(y,u)}\\
 &=\int f\dvar{P}\int h(y+0) \dvar{\nu(y)}\,.
 \end{align*}
 \end{proof}
