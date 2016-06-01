@@ -26,6 +26,7 @@
 \setlist[remlist]{label=(\arabic*), ref=\thethm (\arabic*),noitemsep}
 \newlist{thmasslist}{enumerate}{1}
 \setlist[thmasslist]{label=(\alph*),ref=(\alph*),noitemsep}
+\crefname{thmasslisti}{Voraussetzung}{Voraussetzungen}
 
 \newtheoremstyle{break}{}{}{}{}{\bfseries}{}{\newline}{}
 \declaretheoremstyle[headpunct=.:]{claim}
@@ -42,7 +43,7 @@ name=Korollar,
 %refname={theorem,theorems},        %Lower Case Versions of Theorem Type
 % Refname={Satz,Sätze},
 style=definition,
-numberwithin=section]{cor}
+sibling=thm]{cor}
 
 \declaretheorem[
 name=Satz,
@@ -193,7 +194,7 @@ style=remark]{dproof}
   Nullstellen einer Funktion, deren Wert nur stochastisch gestört gemessen
   werden kann. Im letzten Vortrag wurde die fast sichere Konvergenz gegen eine
   Nullstelle bewiesen. Ziel dieses Vortrages ist es, eine Aussage über die
-  Konvergenzgeschwindigkeit und die Form der Verteilung im Limit ähnlich dem
+  Konvergenzgeschwindigkeit und die Form der Verteilung im Limes ähnlich dem
   zentralen Grenzwertsatz zu beweisen.
 \end{abstract}
 % \newpage
@@ -261,8 +262,8 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
  \end{align*}
  für $n\geq 0$. Außerdem ist $N$ ein $\ll^2$-Martingal.
 \end{lem}
-\begin{lem}[Substitution bei Unabhängigkeit]
- Für $n\geq 1$ und jede Funktion $f:(I\times \zspace,\bb(I)\otimes\zsigma)\to(\RR,\bb(\RR))$ mit
+\begin{lem}[Substitution bei Unabhängigkeit]\label{lem:subst}
+ Für $n\geq 1$ und jede messbare Funktion $f:(I\times \zspace,\bb(I)\otimes\zsigma)\to(\RR,\bb(\RR))$ mit
  wohldefiniertem Integral bezüglich $P^{(X_{n-1},Z_n)}$ gilt
  \begin{equation*}
   \condexp{f(X_{n-1}, Z_n)}{\ff_{n-1}}(\cdot)=\int f(X(\cdot), z)\dvar{P^{Z_1}(z)}\quad\text{fast sicher.}
@@ -342,31 +343,31 @@ Nach Definition der mischenden Konvergenz folgt
 &=\int f\dvar{P}\int h(y+0) \dvar{\nu(y)}\,.
 \end{align*}
 \end{proof}
-\begin{thm}[Stabiler CLT]
- Es sei $Y=(Y_n)_{n\geq 0}$  ein $\ll^2$-Martingal bezüglich einer Filtration
- $(\gg_n)_{n\geq 0}$ und $(a_n)_{n\geq 1}$ eine
- Folge in $(0,\infty)$ mit $a_n\to\infty$. Die folgenden Bedingungen seien erfüllt:
+\begin{thm}[Stabiler CLT]\label{thm:clt}
+  Es sei $Y=(Y_n)_{n\geq 0}$ ein $\ll^2$-Martingal bezüglich der Filtration
+  $\FF$ und $(\kappa_n)_{n\geq 1}$ eine Folge in $(0,\infty)$ mit $a_n\to 0$. Die
+  folgenden Bedingungen seien erfüllt:
  \begin{thmasslist}
- \item Es existiert eine Konstante $v>0$ mit 
+ \item Es existiert eine Konstante $v>0$ mit \label{clt:vora}
    \begin{equation*}
-     \frac{\sprod{Y}_n}{a_n^2}\longrightarrow v\quad\textit{in Wahrscheinlichkeit}
+     \kappa_n^2\sprod{Y}_n\longrightarrow v\quad\textit{in Wahrscheinlichkeit}
    \end{equation*}
    für $n\to\infty$,
- \item ($\GG$-bedingte Lyapunov-Bedingung) Es existiert ein $\delta >0$, sodass 
+ \item ($\FF$-bedingte Lyapunov-Bedingung) Es existiert ein $\delta >0$, sodass \label{clt:vorb}
    \begin{equation*}
-    \frac{1}{a_n^{2+\delta}} \sum_{j=1}^n\condexp{\abs{\Delta Y_j}^{2+\delta}}{\gg_{j-1}}\to 0\quad\textit{in Wahrscheinlichkeit}
+    \kappa_n^{2+\delta} \sum_{j=1}^n\condexp{\abs{\Delta Y_j}^{2+\delta}}{\gg_{j-1}}\to 0\quad\textit{in Wahrscheinlichkeit}
    \end{equation*}
 für ${n\to\infty}$.
  \end{thmasslist}
 Dann gilt für ${n\to\infty}$:
 \begin{equation*}
- \frac{Y_n}{a_n}\to\nn(0,v)\quad\textit{mischend.} 
+ \kappa_nY_n\to\nn(0,v)\quad\textit{mischend.} 
 \end{equation*}
 \end{thm}
 \begin{proof}
  Siehe \cite[Satz~5.31 und Bemerkung~5.32(a)]{lpw}.
 \end{proof}
-\begin{lem}[Diskrete Regel von de~l'Hospital]
+\begin{lem}[Diskrete Regel von de~l'Hospital]\label{lem:lhospital}
  Sei $(a_n)_{n\geq 1}$ eine Folge in $\RR$ und $(b_n)_{n\geq 1}$ eine Folge positiver reeller Zahlen, sodass 
  \begin{thmasslist}
  \item 
@@ -392,7 +393,7 @@ Es folgt
 \end{equation*}
 und da $\varepsilon$ beliebig war folgt die Behauptung.
 \end{proof}
-\begin{lem}[Kronecker, WT Lem. 4.28]
+\begin{lem}[Kronecker, WT Lem. 4.28]\label{lem:kronecker}
  Sei $(a_n)_{n\geq 1}$ eine monoton wachsende Folge positiver Zahlen mit
  $\lim_{n\to\infty}a_n=\infty$ und sei $(b_n)_{n\geq 1}$ eine Folge reeller
  Zahlen. Konvergiert $\sum_{j=1}^\infty b_j/a_j$ in $\RR$, so folgt
@@ -400,7 +401,7 @@ und da $\varepsilon$ beliebig war folgt die Behauptung.
   \lim_{n\to\infty} \frac{1}{a_n}\sum_{j=1}^nb_j=0\,.
  \end{equation*}
 \end{lem}
-\begin{lem}
+\begin{lem}\label{lem:sim}
   \begin{thmlist}
   \item Für reelle Konstanten $b\geq 0$ und $a>-b-1$ existiert $L\in(0,\infty)$,
     sodass\label{lem:sim:prod}
@@ -493,7 +494,7 @@ und
     h(x) = h'(x_0)(x-x_0) + \mathcal{O}((x-x_0)^2)\quad\text{für $x\to x_0$}\,,
    \end{equation*}
  \item Es existieren $\varepsilon,\delta >0$ sodass $H(x,Z_1)\in\ll^{2+\delta}$ für
-   alle $x\in I$ und 
+   alle $x\in I$ und\label{thm:haupt:d} 
    \begin{equation*}
     \sup_{\abs{x-x_0}\leq\varepsilon}\expect{\abs{H(x,Z_1)}^{2+\delta}}<\infty\,.
    \end{equation*}
@@ -522,7 +523,7 @@ und
   Hier wird nur ein Teil vom Fall $\abs{h'(x_0)}C_1>1/2$ bewiesen. Für
   den vollen Beweis siehe \cite[Satz~11.4]{lpw}.
   
-Wie wir letzte Woche gesehen haben, folgt aus \ref{thm:haupt:b}, dass $X$ ein
+Wie wir letzte Woche gesehen haben, folgt aus \cref{thm:haupt:b}, dass $X$ ein
 $\ll^2$-Prozess ist. Sei
 \begin{equation*}
  a\coloneqq -h'(x_0)=\abs{h'(x_o)}\,. 
@@ -533,9 +534,9 @@ definiere für $n\geq 0$
  \beta_n\coloneqq\prod_{j=n_0}^n(1-a\gamma_j) =\prod_{j=1}^{n-n_0+1}(1-a\gamma_{j+n_0-1})\,.
 \end{equation*}
 Insbesondere gilt also $\beta_0=\dotsb=\beta_{n_0-1}=1$ und nach \cref{lem:sim:prod}
-\begin{equation*}
+\begin{equation}\label{eq:beta}
  \beta_n\sim Ln^{-aC_1}\,
-\end{equation*}
+\end{equation}
 für $n\to\infty$ mit einer Konstanten $L\in(0,\infty)$. Wegen $\gamma_n\sim
 C_1/n$ folgt
 \begin{equation}
@@ -561,16 +562,22 @@ Es gilt auch
 $\sqrt{n}\beta_nB_n\to 0$ fast sicher, allerdings ist der Beweis nicht trivial
 und kann nachgelesen werden in \cite[Satz~11.4]{lpw}. Er basiert auf der Idee,
 die Zuwüchse $\Delta B_n$ für große $n$ gegen $(X_n-x_0)^2$ abzuschätzen. Dazu
-wird Voraussetzung~\ref{thm:haupt:c} genutzt.
+wird \cref{thm:haupt:c} genutzt.
 
-Im Folgenden wird gezeigt, dass
+Im Folgenden wird mit dem stabile CLT~\ref{thm:clt} gezeigt, dass
+\begin{equation}\label{eq:mterm}
+ \sqrt{n}\beta_nM_n\to\nn\left( 0,\frac{g(x_0)C_1^2}{2aC_1-1} \right)\quad\textit{mischend.}
+\end{equation}
+% denn dann folgt die Behauptung mittels \cref{cor:mischsum}. \\
+Wähle also
+$\kappa_n=\sqrt{n}\beta_n$, dann gilt nach \cref{eq:beta} und wegen $aC_1>1/2$
 \begin{equation*}
- \sqrt{n}\beta_nM_n\to\nn\left( 0,\frac{g(x_0)C_1^2}{2aC_1-1} \right)\quad\textit{mischend,}
+ \kappa_n\sim Ln^{-aC_1+1/2}\to 0\quad\text{für $n\to\infty$.} 
 \end{equation*}
-denn dann folgt die Behauptung mittels \cref{cor:mischsum}. \\
-$M=(M_n)_{n\geq 0}$
-ist ein $\ll^2$-Martingal, da $N$ eins ist. Es gilt nach der Darstellung für
-$\sprod{N}$ aus \cref{lem:doob}
+$M=(M_n)_{n\geq 0}$ ist ein $\ll^2$-Martingal, da $N$ eins ist.
+
+Wir wollen nun \cref{clt:vora} des CLT überprüfen. Es gilt nach der
+Darstellung für $\sprod{N}$ aus \cref{lem:doob}
 \begin{align*}
  \Delta\sprod{M}_n&=\condexp{(\Delta M_n)^2}{\ff_{n-1}}=\frac{1}{\beta_j^2}\condexp{(\Delta N_n)^2}{\ff_{n-1}}\\
 &=\frac{\gamma_j^2}{\beta_j^2}(g(X_{j-1})-h(X_{j-1})^2)
@@ -579,11 +586,63 @@ für $n\geq 0$. Wegen der Stetigkeit von $h$ und $g$ in $x_0$ gilt
 \begin{equation*}
  g(X_{n-1})-h(X_{n-1})^2\to g(x_0)-h(x_0)^2=g(x_0)\quad\text{f.s.,}
 \end{equation*}
-und zusammen mit \cref{eq:gammabeta} bekommt man
+und zusammen mit \cref{eq:gammabeta} ergibt sich
 \begin{equation*}
  \frac{\Delta\sprod{M}_n}{n^{2aC_1-2}}\to\frac{g(x_0)C_1^2}{L^2}\quad\text{f.s.} 
 \end{equation*}
 für $n\to\infty$.
+Da wir $aC_1>1/2$ annehmen, ist $2aC_1-2>-1$ und deshalb
+\begin{equation*}
+ \sum_{j=1}^\infty j^{2aC_1-2}=\infty\,. 
+\end{equation*}
+Somit können wir die diskrete Regel von l'Hospital~\ref{lem:lhospital} anwenden
+und bekommen
+\begin{equation*}
+ \frac{\sprod{M}_n}{\sum_{j=1}^n j^{2aC_1-2}}\to\frac{g(x_0)C_1^2}{L^2}\quad\text{f.s.}
+\end{equation*}
+für $n\to\infty$. Aus \cref{lem:sim:sum} und \cref{eq:beta} kennen wir die
+asymptotischen Äquivalenzen
+\begin{equation*}
+  \frac{1}{\sum_{j=1}^n j^{2aC_1-2}}\overset{\ref{lem:sim}}{\sim}\frac{2aC_1-1}{n^{2aC_1-1}}\overset{\ref{eq:beta}}{\sim}\frac{2aC_1-1}{L^2}n\beta_n^2\
+\end{equation*}
+d.h. insgesamt
+\begin{equation*}
+ \kappa_n^2\sprod{M}_n\to\frac{g(x_0)C_1^2}{2aC_1-1}\quad\text{f.s.}
+\end{equation*}
+
+Zur Anwendung des CLT fehlt uns noch die bedingte Lyapunov-Bedingung. Es gilt
+für $j\geq 1$
+\begin{equation*}
+ \Delta M_j=\frac{\gamma_j}{\beta_j}(H(X_{j-1},Z_j)-h(X_{j-1}))\,,
+\end{equation*}
+also mit dem $\delta$ aus \cref{thm:haupt:d}
+\begin{equation}\label{eq:lyasup}
+ \sum_{j=1}^n\condexp{\abs{\Delta M_j}^{2+\delta}}{\ff_{j-1}}\leq\sum_{j=1}^n\left( \frac{\gamma_j}{\beta_j} \right)^{2+\delta}\sup_{k\geq 1}\condexp{\abs{H(X_{k-1}, Z_k)-h(X_{k-1})}^{2+\delta}}{\ff_{k-1}}\,.
+\end{equation}
+Das Supremum über die bedingten Erwartungswerte kann gebildet werden, weil die
+Indexmenge abzählbar ist. Für $n\to\infty$ gilt wegen $\gamma_n\sim C_1/n$
+\begin{equation*}
+ (\sqrt{n}\beta_n)^{2+\delta} \left( \frac{\gamma_n}{\beta_n} \right)^{2+\delta}=n^{1+\delta/2}\gamma_n^{2+\delta}\sim C_1^{2+\delta}n^{-1-\delta/2}
+\end{equation*}
+und deshalb
+\begin{equation*}
+ \sum_{n=1}^\infty \kappa_n^{2+\delta}\left( \frac{\gamma_n}{\beta_n} \right)^{2+\delta}<\infty\,.
+\end{equation*}
+Mit dem Kronecker-Lemma~\ref{lem:kronecker} folgt
+\begin{equation*}
+ \kappa_n^{2+\delta} \sum_{j=1}^n\left( \frac{\gamma_n}{\beta_n} \right)^{2+\delta}\to 0\,.
+\end{equation*}
+Es soll nun das Supremum in \cref{eq:lyasup} mithilfe von \cref{thm:haupt:d} abgeschätzt werden.
+Mittels Substitution bei Unabhängigkeit \ref{lem:subst} gilt für $n\geq 1$
+\begin{align*}
+  \condexp{\abs{H(X_{n-1},Z_n)-h(X_{n-1})}^{2+\delta}}{\ff_{n-1}}&=\int\abs{H(X_{n-1},z)-h(X_{n-1})}^{2+\delta}\dvar{P^{Z_1}(z)} \\
+&=\norm{H(X_{n-1},\cdot)-h(X_{n-1})}_{2+\delta}^{2+\delta}
+\end{align*}
+ mit der Norm auf $\ll^{2+\delta}(P^{Z_1})$. Durch die Dreiecksungleichung kann
+ man abschätzen
+ \begin{equation*}
+   
+ \end{equation*}
 \end{proof}
 \begin{rem}
  Optimale Schrittweite 
