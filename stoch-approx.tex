@@ -543,12 +543,14 @@ C_1/n$ folgt
   \frac{\gamma_n}{\beta_n}\sim\frac{C_1}{L}n^{aC_1-1}\label{eq:gammabeta}
 \end{equation}
 Mit der Doob-Zerlegung $X=N+A$ aus \cref{lem:doob} bekommen wir
-\begin{align*}
+\begin{align}
   \sqrt{n}(X_n-x_0)&=\sqrt{n}\beta_n\left(X_0-x_0+\sum_{j=1}^n\frac{1}{\beta_j}(X_j - X_{j-1} + X_{j-1})-\frac{1}{\beta_{j-1}}X_{j-1}-\frac{x_0}{\beta_j}+\frac{x_0}{\beta_{j-1}}\right)\nonumber \\
-&=\phantom{+}\sqrt{n}\beta_n(X_0-x_0)\label{eq:1}\\
+  \begin{split}\label{eq:zerl}
+&=\phantom{+}\sqrt{n}\beta_n(X_0-x_0)\\
 &\phantom{=}+\sqrt{n}\beta_n\sum_{j=1}^n\frac{1}{\beta_j}\Delta N_j\\
 &\phantom{=}+\sqrt{n}\beta_n\sum_{j=1}^n\left(\frac{1}{\beta_j}\Delta A_j+(X_{j-1}-x_0)(\frac{1}{\beta_j}-\frac{1}{\beta_{j-1}})\right)\,. 
-\end{align*}
+\end{split}
+\end{align}
 Wir wollen die drei Summanden einzeln auf ihr Verhalten für $n\to\infty$
 untersuchen. Definiere dazu für $n\geq 0$
 \begin{align*}
@@ -636,13 +638,37 @@ Es soll nun das Supremum in \cref{eq:lyasup} mithilfe von \cref{thm:haupt:d} abg
 Mittels Substitution bei Unabhängigkeit \ref{lem:subst} gilt für $n\geq 1$
 \begin{align*}
   \condexp{\abs{H(X_{n-1},Z_n)-h(X_{n-1})}^{2+\delta}}{\ff_{n-1}}&=\int\abs{H(X_{n-1},z)-h(X_{n-1})}^{2+\delta}\dvar{P^{Z_1}(z)} \\
-&=\norm{H(X_{n-1},\cdot)-h(X_{n-1})}_{2+\delta}^{2+\delta}
+&=\norm{H(X_{n-1},Z_1(\cdot))-h(X_{n-1})}_{2+\delta}^{2+\delta}
 \end{align*}
- mit der Norm auf $\ll^{2+\delta}(P^{Z_1})$. Durch die Dreiecksungleichung kann
- man abschätzen
+mit der Norm auf $\ll^{2+\delta}(P)$. Definiere
+$\varphi(x)\coloneqq\expect{\abs{H(x,Z_1)}^{2+\delta}}$. Durch die
+Dreiecksungleichung und die Jensensche Ungleichung kann für $x\in I$ man abschätzen
+ \begin{align*}
+   \norm{H(x,Z_1)-h(x)}_{2+\delta}&\leq\norm{H(x,Z_1)}_{2+\delta}+\abs{h(x)}\\
+    &=\varphi(x)^{1/(2+\delta)}+\abs{\expect{H(x, Z_1)}}\\
+&\leq\varphi(x)^{1/(2+\delta)}+\expect{\abs{H(x, Z_1)}^{2+\delta}}^{1/(2+\delta)}\\
+&=2\varphi(x)^{1/(2+\delta)}\,,
+ \end{align*}
+ also gilt
  \begin{equation*}
-   
+  \sup_{n\geq 1} \condexp{\abs{H(X_{n-1},Z_n)-h(X_{n-1})}^{2+\delta}}{\ff_{n-1}}\leq 2^{2+\delta}\sup_{n\geq 1}\varphi(X_{n-1})<\infty\,\text{f.s.}
  \end{equation*}
+ Die rechte Seite ist fast sicher endlich nach \cref{thm:haupt:d} zusammen mit der fast sicheren Konvergenz von $X_n$
+ gegen $x_0$.
+ 
+Insgesamt folgt die Lyapunov-Bedingung
+\begin{equation*}
+  \kappa_n^{2+\delta} \sum_{j=1}\condexp{\abs{\Delta M}^{2+\delta}}{\ff_{j-1}}\to 0\quad\text{f.s.}
+\end{equation*}
+und der stabile CLT liefert
+\begin{equation*}
+ \sqrt{n}\beta_nM_n\to\nn\left( 0,\frac{g(x_0)C_1^2}{2aC_1-1} \right)\quad\textit{mischend.}
+\end{equation*}
+Wir kehren zur Zerlegung aus \cref{eq:zerl} zurück:
+\begin{equation*}
+ \sqrt{n}(X_n-x_0)=\sqrt{n}\beta_n(X_0-x_0) +\sqrt{n}\beta_nM_n+\sqrt{n}\beta_nB_n
+\end{equation*}
+Mit der Konvergenz der beiden anderen Terme gegen $0$ folgt die Behauptung mittels \cref{cor:mischsum}.
 \end{proof}
 \begin{rem}
  Optimale Schrittweite 
