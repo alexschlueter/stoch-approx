@@ -161,6 +161,7 @@ style=remark]{dproof}
 \newcommand{\zz}{\mathcal{Z}}
 \newcommand{\zspace}{V}
 \newcommand{\zsigma}{\vv}
+\newcommand{\interv}{\RR}
 
 \newcommand{\Cb}[1]{C_b(#1)}
 \newcommand{\expect}[1]{\EE[#1]}
@@ -206,14 +207,15 @@ Im Folgenden sei
 \begin{itemize}
 \item $(\Omega, \ff, P)$ ein Wahrscheinlichkeitsraum und $(\zspace,\zsigma)$ ein messbarer Raum,
 \item $(Z_n)_{n\geq 1}$ eine Folge u.i.v $(\zspace, \zsigma)$-wertiger Zufallsvariablen,
-\item $I\subset\RR$ ein abgeschlossenes Intervall oder $I=\RR$, 
-\item $X_0$ eine von $(Z_n)_{n\geq 1}$ unabhängige $I$-wertige Zufallsvariable,
+% \item $I\subset\RR$ ein abgeschlossenes Intervall oder $I=\RR$, 
+% \item $X_0$ eine von $(Z_n)_{n\geq 1}$ unabhängige $I$-wertige Zufallsvariable,
+\item $X_0$ eine von $(Z_n)_{n\geq 1}$ unabhängige reelle Zufallsvariable,
 \item $\ff_n=\sigma(X_0,Z_1,\dotsc,Z_n)$ und $\FF=(\ff_n)_{n\geq 0}$ eine Filtration,
 \item $(\gamma_n)_{n\geq 1}$ eine Folge in $(0,\infty)$ und
-\item $H:(I\times \zspace,\bb(I)\otimes\zsigma)\to(\RR,\bb(\RR))$ eine messbare
+\item $H:(\interv\times \zspace,\bb(\interv)\otimes\zsigma)\to(\RR,\bb(\RR))$ eine messbare
   Abbildung mit
   \begin{equation*}
-    H(x,Z_1)\in\ll^1\quad\text{für alle $x\in I$.}
+    H(x,Z_1)\in\ll^1\quad\text{für alle $x\in \interv$.}
   \end{equation*}
 \end{itemize}
 
@@ -221,17 +223,17 @@ Der \textbf{Robbins-Monro-Algorithmus} ist der $\FF$-adaptierte reelle Prozess
 $X=(X_n)_{n\geq 0}$ definiert durch die Rekursion
 \begin{equation}
   \label{eq:algo}
-  X_{n+1}=X_n+\gamma_{n+1}H(X_n,Z_{n+1})\,,
+  X_{n+1}=X_n+\gamma_{n+1}H(X_n,Z_{n+1})\,.
 \end{equation}
-wobei wir annehmen, dass die Werte immer in $I$ liegen.
+% wobei wir annehmen, dass die Werte immer in $I$ liegen.
 
 Die \textbf{Erwartungswertfunktion} des Algorithmus ist definiert durch
 \begin{equation*}
- h:I\to\RR,\quad h(x)\coloneqq\expect{H(x,Z_1)}
+ h:\interv\to\RR,\quad h(x)\coloneqq\expect{H(x,Z_1)}
 \end{equation*}
 und außerdem sei
 \begin{equation*}
- g:I\to\overline{\RR}_+,\quad g(x)\coloneqq\expect{H(x,Z_1)^2}.
+ g:\interv\to\overline{\RR}_+,\quad g(x)\coloneqq\expect{H(x,Z_1)^2}.
 \end{equation*}
 
 \begin{rem}
@@ -243,15 +245,25 @@ und außerdem sei
   \item (Downcrossing-Bedingung) $h$ ist stetig und es gibt ein $x_0\in
     h^{-1}(0)$ mit
     \begin{equation*}
-      \sup_{x\in I}(x-x_0)h(x)\leq 0\,,
+      \sup_{x\in\interv}(x-x_0)h(x)\leq 0\,,
     \end{equation*}
   \item (Beschränkte Störung) $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine
-    Konstante $C\in\RR_+$ und alle $x\in I$,\label{rem:beschr}
+    Konstante $C\in\RR_+$ und alle $x\in\interv$,\label{rem:beschr}
   \item (Abnehmende Schrittweiten) $\sum_{n=1}^\infty \gamma_n=\infty$ und
     $\sum_{n=1}^\infty\gamma_n^2<\infty$.
   \end{enumerate}
 \end{rem}
 Wir benötigen noch folgende Resultate vom letzten Mal:
+\begin{lem}[Substitution bei Unabhängigkeit]\label{lem:subst}
+ Für $n\geq 1$ und jede messbare Funktion $f:(\interv\times \zspace,\bb(\interv)\otimes\zsigma)\to(\RR,\bb(\RR))$ mit
+ wohldefiniertem Integral bezüglich $P^{(X_{n-1},Z_n)}$ gilt
+ \begin{equation*}
+  \condexp{f(X_{n-1}, Z_n)}{\ff_{n-1}}(\cdot)=\int f(X(\cdot), z)\dvar{P^{Z_1}(z)}\quad\text{fast sicher.}
+ \end{equation*}
+\end{lem}
+\begin{proof}
+ $Z_n$  ist unabhängig von $\ff_{n-1}$, also ist die Aussage vom letzten Mal anwendbar.
+\end{proof}
 \begin{lem}[Doob-Zerlegung]\label{lem:doob}
  Unter den o.g. Bedingungen ist $X$ ein $\ll^2$-Prozess und für die
  Doob-Zerlegung $X=N+A$ in ein Martinal $N=(N_n)_{n\geq 0}$ und einen
@@ -262,16 +274,6 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
  \end{align*}
  für $n\geq 0$. Außerdem ist $N$ ein $\ll^2$-Martingal.
 \end{lem}
-\begin{lem}[Substitution bei Unabhängigkeit]\label{lem:subst}
- Für $n\geq 1$ und jede messbare Funktion $f:(I\times \zspace,\bb(I)\otimes\zsigma)\to(\RR,\bb(\RR))$ mit
- wohldefiniertem Integral bezüglich $P^{(X_{n-1},Z_n)}$ gilt
- \begin{equation*}
-  \condexp{f(X_{n-1}, Z_n)}{\ff_{n-1}}(\cdot)=\int f(X(\cdot), z)\dvar{P^{Z_1}(z)}\quad\text{fast sicher.}
- \end{equation*}
-\end{lem}
-\begin{proof}
- $Z_n$  ist unabhängig von $\ff_{n-1}$, also ist die Aussage vom letzten Mal anwendbar.
-\end{proof}
 \section{Vorbereitungen}
 \begin{defn}
   % Es sei $K$ ein Markov-Kern und $(K_n)_{n\geq 1}$ eine Folge von Markov-Kernen von
@@ -313,7 +315,7 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
   Sei $(Y_n)_{n\geq 1}$ eine Folge von reellen Zufallsvariablen und $\nu$ ein
   Wahrscheinlichkeitsmaß auf $(\RR,\bb(\RR))$ mit $Y_n\to\nu$ \textit{mischend}
   für $n\to\infty$. Außerdem sei $(U_n)_{n\geq 1}$ eine Folge von reellen
-  Zufallsvariablen mit $U_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
+  Zufallsvariablen mit $U_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt für $n\to\infty$
 \begin{equation*}
  (Y_n,U_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
 \end{equation*}
@@ -321,58 +323,59 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
 \begin{proof}
  Siehe \cite[Korollar~5.29(a)]{lpw}.
 \end{proof}
-\begin{cor}\label{cor:mischsum}
-  Sei $(Y_n)_{n\geq 1}$ eine Folge von reellen Zufallsvariablen und $\nu$ ein
-  Wahrscheinlichkeitsmaß auf $(\RR,\bb(\RR))$ mit $Y_n\to\nu$ \textit{mischend}
-  für $n\to\infty$. Außerdem sei $(U_n)_{n\geq 1}$ eine Folge von reellen
-  Zufallsvariablen mit $U_n\to 0$ \textit{in Wahrscheinlichkeit}. Dann gilt
-\begin{equation*}
- Y_n + U_n\to\nu\quad\textit{mischend.}
+\begin{cor}[Stabiler Slutsky]\label{cor:mischsum}
+  In der Situation von \cref{lem:misch} gilt
+  \begin{equation*}
+\begin{aligned}
+ Y_n + U_n&\to\nu\quad &&\text{\textit{mischend} und} \\
+ Y_n\cdot U_n&\to\delta_0 \quad &&\textit{mischend.}
+\end{aligned}
 \end{equation*}
 \end{cor}
 \begin{proof}
   Es seien $f\in\ll^1(P)$ und $h\in\Cb{\RR}$ beliebig. Dann ist
-  $h':\RR^2\to\RR$, $h'(y,z)\coloneqq h(y+z)$ in $\Cb{\RR^2}$. Nach
+  $h':\RR^2\to\RR$, $h'(y,u)\coloneqq h(y+u)$ in $\Cb{\RR^2}$. Nach
   \cref{lem:misch} gilt
 \begin{equation*}
  (Y_n,U_n)\to\nu\otimes\delta_0\quad\textit{mischend.}
 \end{equation*}
 Nach Definition der mischenden Konvergenz folgt
 \begin{align*}
-  \expect{f\cdot h(Y_n+U_n)}=\expect{f\cdot h'(Y_n,U_n}&\to\int f\dvar{P}\int h'(y,u) \dvar{\nu\otimes\delta_0(y,u)}\\
+  \expect{f\cdot h(Y_n+U_n)}=\expect{f\cdot h'(Y_n,U_n)}&\to\int f\dvar{P}\int h'(y,u) \dvar{\nu\otimes\delta_0(y,u)}\\
 &=\int f\dvar{P}\int h(y+0) \dvar{\nu(y)}\,.
 \end{align*}
+Für die Multiplikation funktioniert der Beweis analog.
 \end{proof}
 \begin{thm}[Stabiler CLT]\label{thm:clt}
-  Es sei $Y=(Y_n)_{n\geq 0}$ ein $\ll^2$-Martingal bezüglich der Filtration
-  $\FF$ und $(\kappa_n)_{n\geq 1}$ eine Folge in $(0,\infty)$ mit $a_n\to 0$. Die
+  Es sei $M=(M_n)_{n\geq 0}$ ein $\ll^2$-Martingal bezüglich der Filtration
+  $\FF$ und $(\kappa_n)_{n\geq 0}$ eine Folge in $(0,\infty)$ mit $\kappa_n\to 0$. Die
   folgenden Bedingungen seien erfüllt:
  \begin{thmasslist}
  \item Es existiert eine Konstante $v>0$ mit \label{clt:vora}
    \begin{equation*}
-     \kappa_n^2\sprod{Y}_n\longrightarrow v\quad\textit{in Wahrscheinlichkeit}
+     \kappa_n^2\sprod{M}_n\longrightarrow v\quad\textit{in Wahrscheinlichkeit}
    \end{equation*}
    für $n\to\infty$,
  \item ($\FF$-bedingte Lyapunov-Bedingung) Es existiert ein $\delta >0$, sodass \label{clt:vorb}
    \begin{equation*}
-    \kappa_n^{2+\delta} \sum_{j=1}^n\condexp{\abs{\Delta Y_j}^{2+\delta}}{\gg_{j-1}}\to 0\quad\textit{in Wahrscheinlichkeit}
+    \kappa_n^{2+\delta} \sum_{j=1}^n\condexp{\abs{\Delta M_j}^{2+\delta}}{\ff_{j-1}}\to 0\quad\textit{in Wahrscheinlichkeit}
    \end{equation*}
 für ${n\to\infty}$.
  \end{thmasslist}
 Dann gilt für ${n\to\infty}$:
 \begin{equation*}
- \kappa_nY_n\to\nn(0,v)\quad\textit{mischend.} 
+ \kappa_nM_n\to\nn(0,v)\quad\textit{mischend.} 
 \end{equation*}
 \end{thm}
 \begin{proof}
  Siehe \cite[Satz~5.31 und Bemerkung~5.32(a)]{lpw}.
 \end{proof}
-\begin{lem}[Diskrete Regel von de~l'Hospital]\label{lem:lhospital}
+\begin{lem}[Diskrete Regel von l'Hospital]\label{lem:lhospital}
  Sei $(a_n)_{n\geq 1}$ eine Folge in $\RR$ und $(b_n)_{n\geq 1}$ eine Folge positiver reeller Zahlen, sodass 
  \begin{thmasslist}
  \item 
      $\sum_{n=1}^\infty b_n=\infty$ und
- \item es existiert $c\in\RR$ mit $\lim_{n\to\infty}a_n/b_n=c$
+ \item es existiert $c\in\RR$ mit $\lim_{n\to\infty}a_n/b_n=c$.
  \end{thmasslist}
  Dann gilt
  \begin{equation*}
@@ -488,13 +491,13 @@ und
  \begin{thmasslist}
  \item $X_n\to x_0$ f.s. für $n\to\infty$.
  \item $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine Konstante $C\in\RR_+$ und
-   alle $x\in I$,\label{thm:haupt:b}
+   alle $x\in \interv$,\label{thm:haupt:b}
  \item $g$ sei stetig in $x_0$, h sei differenzierbar in $x_0$, $h'(x_0)<0$ und\label{thm:haupt:c}
    \begin{equation*}
     h(x) = h'(x_0)(x-x_0) + \mathcal{O}((x-x_0)^2)\quad\text{für $x\to x_0$}\,,
    \end{equation*}
  \item Es existieren $\varepsilon,\delta >0$ sodass $H(x,Z_1)\in\ll^{2+\delta}$ für
-   alle $x\in I$ und\label{thm:haupt:d} 
+   alle $x\in \interv$ und\label{thm:haupt:d} 
    \begin{equation*}
     \sup_{\abs{x-x_0}\leq\varepsilon}\expect{\abs{H(x,Z_1)}^{2+\delta}}<\infty\,.
    \end{equation*}
@@ -511,7 +514,7 @@ und
    \end{equation*}
  \item Falls $\abs{h'(x_0)}C_1<1/2$: 
    \begin{equation*}
-     n^{\abs{h'(x_o)}C_1}(X_n-x_0)\to\xi \quad\text{f.s.}
+     n^{\abs{h'(x_0)}C_1}(X_n-x_0)\to\xi \quad\text{f.s.}
    \end{equation*}
    für eine reelle Zufallsvariable $\xi$, die von $X_0$ abhängt.
  \end{enumerate}
@@ -563,28 +566,23 @@ $\sqrt{n}\beta_n(X_0-x_0)\to 0$ punktweise.
 Es gilt auch
 $\sqrt{n}\beta_nB_n\to 0$ fast sicher, allerdings ist der Beweis nicht trivial
 und kann nachgelesen werden in \cite[Satz~11.4]{lpw}. Er basiert auf der Idee,
-die Zuwüchse $\Delta B_n$ für große $n$ gegen $(X_n-x_0)^2$ abzuschätzen. Dazu
+die Zuwächse $\Delta B_n$ für große $n$ gegen $(X_n-x_0)^2$ abzuschätzen. Dazu
 wird \cref{thm:haupt:c} genutzt.
 
-Im Folgenden wird mit dem stabile CLT~\ref{thm:clt} gezeigt, dass
+Im Folgenden wird mit dem stabilen CLT~\ref{thm:clt} gezeigt, dass
 \begin{equation}\label{eq:mterm}
  \sqrt{n}\beta_nM_n\to\nn\left( 0,\frac{g(x_0)C_1^2}{2aC_1-1} \right)\quad\textit{mischend.}
 \end{equation}
-% denn dann folgt die Behauptung mittels \cref{cor:mischsum}. \\
-Wähle also
-$\kappa_n=\sqrt{n}\beta_n$, dann gilt nach \cref{eq:beta} und wegen $aC_1>1/2$
-\begin{equation*}
- \kappa_n\sim Ln^{-aC_1+1/2}\to 0\quad\text{für $n\to\infty$.} 
-\end{equation*}
-$M=(M_n)_{n\geq 0}$ ist ein $\ll^2$-Martingal, da $N$ eins ist.
+Wähle also $\kappa_n=\sqrt{n}\beta_n$, dann gilt wie oben schon bemerkt
+$\kappa_n\to 0$. $M=(M_n)_{n\geq 0}$ ist ein $\ll^2$-Martingal, da $N$ eins ist.
 
 Wir wollen nun \cref{clt:vora} des CLT überprüfen. Es gilt nach der
 Darstellung für $\sprod{N}$ aus \cref{lem:doob}
 \begin{align*}
- \Delta\sprod{M}_n&=\condexp{(\Delta M_n)^2}{\ff_{n-1}}=\frac{1}{\beta_j^2}\condexp{(\Delta N_n)^2}{\ff_{n-1}}\\
-&=\frac{\gamma_j^2}{\beta_j^2}(g(X_{j-1})-h(X_{j-1})^2)
+ \Delta\sprod{M}_n&=\condexp{(\Delta M_n)^2}{\ff_{n-1}}=\frac{1}{\beta_n^2}\condexp{(\Delta N_n)^2}{\ff_{n-1}}\\
+&=\frac{\gamma_n^2}{\beta_n^2}(g(X_{n-1})-h(X_{n-1})^2)
 \end{align*}
-für $n\geq 0$. Wegen der Stetigkeit von $h$ und $g$ in $x_0$ gilt
+für $n\geq 1$. Wegen der Stetigkeit von $h$ und $g$ in $x_0$ gilt
 \begin{equation*}
  g(X_{n-1})-h(X_{n-1})^2\to g(x_0)-h(x_0)^2=g(x_0)\quad\text{f.s.,}
 \end{equation*}
@@ -605,7 +603,7 @@ und bekommen
 für $n\to\infty$. Aus \cref{lem:sim:sum} und \cref{eq:beta} kennen wir die
 asymptotischen Äquivalenzen
 \begin{equation*}
-  \frac{1}{\sum_{j=1}^n j^{2aC_1-2}}\overset{\ref{lem:sim}}{\sim}\frac{2aC_1-1}{n^{2aC_1-1}}\overset{\ref{eq:beta}}{\sim}\frac{2aC_1-1}{L^2}n\beta_n^2\
+  \frac{1}{\sum_{j=1}^n j^{2aC_1-2}}\overset{\ref{lem:sim}}{\sim}\frac{2aC_1-1}{n^{2aC_1-1}}\overset{\eqref{eq:beta}}{\sim}\frac{2aC_1-1}{L^2}n\beta_n^2\
 \end{equation*}
 d.h. insgesamt
 \begin{equation*}
@@ -632,7 +630,7 @@ und deshalb
 \end{equation*}
 Mit dem Kronecker-Lemma~\ref{lem:kronecker} folgt
 \begin{equation*}
- \kappa_n^{2+\delta} \sum_{j=1}^n\left( \frac{\gamma_n}{\beta_n} \right)^{2+\delta}\to 0\,.
+ \kappa_n^{2+\delta} \sum_{j=1}^n\left( \frac{\gamma_j}{\beta_j} \right)^{2+\delta}\to 0\,.
 \end{equation*}
 Es soll nun das Supremum in \cref{eq:lyasup} mithilfe von \cref{thm:haupt:d} abgeschätzt werden.
 Mittels Substitution bei Unabhängigkeit \ref{lem:subst} gilt für $n\geq 1$
@@ -642,7 +640,7 @@ Mittels Substitution bei Unabhängigkeit \ref{lem:subst} gilt für $n\geq 1$
 \end{align*}
 mit der Norm auf $\ll^{2+\delta}(P)$. Definiere
 $\varphi(x)\coloneqq\expect{\abs{H(x,Z_1)}^{2+\delta}}$. Durch die
-Dreiecksungleichung und die Jensensche Ungleichung kann für $x\in I$ man abschätzen
+Dreiecksungleichung und die Jensensche Ungleichung kann für $x\in \interv$ man abschätzen
  \begin{align*}
    \norm{H(x,Z_1)-h(x)}_{2+\delta}&\leq\norm{H(x,Z_1)}_{2+\delta}+\abs{h(x)}\\
     &=\varphi(x)^{1/(2+\delta)}+\abs{\expect{H(x, Z_1)}}\\
@@ -658,7 +656,7 @@ Dreiecksungleichung und die Jensensche Ungleichung kann für $x\in I$ man absch�
  
 Insgesamt folgt die Lyapunov-Bedingung
 \begin{equation*}
-  \kappa_n^{2+\delta} \sum_{j=1}\condexp{\abs{\Delta M}^{2+\delta}}{\ff_{j-1}}\to 0\quad\text{f.s.}
+  \kappa_n^{2+\delta} \sum_{j=1}^n\condexp{\abs{\Delta M_j}^{2+\delta}}{\ff_{j-1}}\to 0\quad\text{f.s.}
 \end{equation*}
 und der stabile CLT liefert
 \begin{equation*}
@@ -668,7 +666,7 @@ Wir kehren zur Zerlegung aus \cref{eq:zerl} zurück:
 \begin{equation*}
  \sqrt{n}(X_n-x_0)=\sqrt{n}\beta_n(X_0-x_0) +\sqrt{n}\beta_nM_n+\sqrt{n}\beta_nB_n
 \end{equation*}
-Mit der Konvergenz der beiden anderen Terme gegen $0$ folgt die Behauptung mittels \cref{cor:mischsum}.
+Mit der fast sicheren Konvergenz der beiden anderen Terme gegen $0$ folgt die Behauptung mittels \cref{cor:mischsum}.
 \end{proof}
 \begin{rem}
  Optimale Schrittweite 
