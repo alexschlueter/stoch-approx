@@ -196,7 +196,7 @@ style=remark]{dproof}
 \begin{abstract}
   Der Robbins-Monro-Algorithmus ist ein rekursives Verfahren zur Bestimmung von
   Nullstellen einer Funktion, deren Wert nur stochastisch gestört gemessen
-  werden kann. Im letzten Vortrag wurde die fast sichere Konvergenz gegen eine
+  werden kann. Im letzten Vortrag\footcite{seb} wurde die fast sichere Konvergenz gegen eine
   Nullstelle gezeigt. Ziel dieses Vortrages ist es, einen zentralen
   Grenzwertsatz für den Algorithmus zu beweisen, der Aufschluss über die
   Konvergenzgeschwindigkeit und die Form der Verteilung im Limes gibt.
@@ -510,7 +510,7 @@ kann verstanden werden als eine Aussage über die Konvergenzrate im starken
 Gesetz der großen Zahlen. Letzteres besagt für u.i.v. Zufallsvariablen
 $Y_1,Y_2,\dotsc\in\ll^1$ mit $\mu =\expect{Y_1}$
 \begin{equation*}
-  \frac{1}{n}\sum_{k=1}^nY_k-\mu\overset{n\to\infty}{\longrightarrow} 0\quad\textit{f.s.} 
+  \frac{1}{n}\sum_{j=1}^nY_j-\mu\overset{n\to\infty}{\longrightarrow} 0\quad\textit{f.s.} 
 \end{equation*}
 Der zentrale Grenzwertsatz beantwortet (im Fall endlicher Varianz
 $\sigma^2=\Var{Y_1}>0$) die Frage
@@ -520,7 +520,7 @@ Dazu gibt er eine Folge (nämlich $\sqrt{n}$) an, die genau schnell genug wächs
 um sich mit der Nullfolge bei Multiplikation auszubalancieren. Das Ergebnis ist die
 bekannte schwache Konvergenz gegen eine Normalverteilung  
 \begin{equation*}
- \sqrt{n}\left(\frac{1}{n}\sum_{k=1}^nY_k-\mu\right)\overset{d}{\to}\nn(0,\sigma^2)\,. 
+ \sqrt{n}\left(\frac{1}{n}\sum_{j=1}^nY_j-\mu\right)\overset{d}{\to}\nn(0,\sigma^2)\,. 
 \end{equation*}
 Jede langsamer wachsende Folge als $\sqrt{n}$ würde gegen die Nullfolge
 \enquote{verlieren} und man bekäme Konvergenz des Produktes gegen die
@@ -795,6 +795,7 @@ optimaler Wahl der Schrittweiten mit $C_1=1/\abs{h'(x_0)}=1/F'(x_0)$ folgt
 \end{equation*}
 für $n\to\infty$.
 \end{exmp}
+% \nocite{seb}
 \printbibliography
 
 \end{document}
