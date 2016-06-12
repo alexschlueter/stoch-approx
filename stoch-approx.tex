@@ -162,12 +162,15 @@ style=remark]{dproof}
 \newcommand{\zspace}{V}
 \newcommand{\zsigma}{\vv}
 \newcommand{\interv}{\RR}
+\newcommand{\indic}{\mathbbm{1}}
+\newcommand{\indics}[1]{\mathbbm{1}_{\{#1\}}}
 
 \newcommand{\Cb}[1]{C_b(#1)}
 \newcommand{\expect}[1]{\EE[#1]}
 \newcommand{\condexp}[2]{\EE[#1\,|\,#2]}
 \newcommand{\dvar}[1]{\,\mathrm{d}#1}
 \newcommand{\dmeas}[2]{\,#1(\mathrm{d}#2)}
+\newcommand{\Var}[1]{\mathrm{Var}[#1]}
 % \newcommand{\meas}[2]{\,\mathrm{d}#1(#2)}
 \DeclarePairedDelimiter{\sprod}{\langle}{\rangle}	% spitze Klammern
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}		% Betrag
@@ -191,19 +194,19 @@ style=remark]{dproof}
 % {\let\newpage\relax\maketitle}
 \maketitle
 \begin{abstract}
-  Der Robbins-Monro-Algorithmus ist ein iteratives Verfahren zur Bestimmung von
+  Der Robbins-Monro-Algorithmus ist ein rekursives Verfahren zur Bestimmung von
   Nullstellen einer Funktion, deren Wert nur stochastisch gestört gemessen
   werden kann. Im letzten Vortrag wurde die fast sichere Konvergenz gegen eine
-  Nullstelle bewiesen. Ziel dieses Vortrages ist es, eine Aussage über die
-  Konvergenzgeschwindigkeit und die Form der Verteilung im Limes ähnlich dem
-  zentralen Grenzwertsatz zu beweisen.
+  Nullstelle gezeigt. Ziel dieses Vortrages ist es, einen zentralen
+  Grenzwertsatz für den Algorithmus zu beweisen, der Aufschluss über die
+  Konvergenzgeschwindigkeit und die Form der Verteilung im Limes gibt.
 \end{abstract}
 % \newpage
 \tableofcontents
 % \newpage
 
 \section{Erinnerungen}
-Im Folgenden sei    
+Diese Arbeit orientiert sich an \cite[Kapitel 11.1]{lusch}. Im Folgenden sei    
 \begin{itemize}
 \item $(\Omega, \ff, P)$ ein Wahrscheinlichkeitsraum und $(\zspace,\zsigma)$ ein messbarer Raum,
 \item $(Z_n)_{n\geq 1}$ eine Folge u.i.v $(\zspace, \zsigma)$-wertiger Zufallsvariablen,
@@ -243,7 +246,7 @@ und außerdem sei
   waren
   \begin{enumerate}[label=(\alph*)]
   \item (Downcrossing-Bedingung) $h$ ist stetig und es gibt ein $x_0\in
-    h^{-1}(0)$ mit
+    \set{h=0}$ mit
     \begin{equation*}
       \sup_{x\in\interv}(x-x_0)h(x)\leq 0\,,
     \end{equation*}
@@ -275,6 +278,10 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
  für $n\geq 0$. Außerdem ist $N$ ein $\ll^2$-Martingal.
 \end{lem}
 \section{Vorbereitungen}
+Für die Untersuchung der Konvergenzraten brauchen wir eine Version des
+zentralen Grenzwertsatzes für Martingale. Da dieser die Folgerung einer
+stärkeren Konvergenz als Verteilungskonvergenz zulässt, lohnt es sich, diese
+zunächst einzuführen.
 \begin{defn}
   % Es sei $K$ ein Markov-Kern und $(K_n)_{n\geq 1}$ eine Folge von Markov-Kernen von
   % $(\Omega, \ff)$ nach $(\RR^d, \bb(\RR^d))$. Außerdem sei $(X_n)_{n\geq 1}$
@@ -321,9 +328,9 @@ Wir benötigen noch folgende Resultate vom letzten Mal:
 \end{equation*}
 \end{lem}
 \begin{proof}
- Siehe \cite[Korollar~5.29(a)]{lpw}.
+ Siehe \cite[Korollar~5.29(a)]{lusch}.
 \end{proof}
-\begin{cor}[Stabiler Slutsky]\label{cor:mischsum}
+\begin{cor}[Stabiler Slutzky]\label{cor:mischsum}
   In der Situation von \cref{lem:misch} gilt
   \begin{equation*}
 \begin{aligned}
@@ -351,7 +358,7 @@ Für die Multiplikation funktioniert der Beweis analog.
   $\FF$ und $(\kappa_n)_{n\geq 0}$ eine Folge in $(0,\infty)$ mit $\kappa_n\to 0$. Die
   folgenden Bedingungen seien erfüllt:
  \begin{thmasslist}
- \item Es existiert eine Konstante $v>0$ mit \label{clt:vora}
+ \item Es existiert eine Konstante $v\geq 0$ mit \label{clt:vora}
    \begin{equation*}
      \kappa_n^2\sprod{M}_n\longrightarrow v\quad\textit{in Wahrscheinlichkeit}
    \end{equation*}
@@ -368,10 +375,24 @@ Dann gilt für ${n\to\infty}$:
 \end{equation*}
 \end{thm}
 \begin{proof}
- Siehe \cite[Satz~5.31 und Bemerkung~5.32(a)]{lpw}.
+ Siehe \cite[Satz~5.31 und Bemerkung~5.32(a)]{lusch}.
 \end{proof}
+\begin{rem}
+ Sei $(Y_n)_{n\geq 1}$ eine Folge u.i.v. Zufallsvariablen mit $Y_1\in\ll^2$. Man bekommt den
+ klassischen zentralen Grenzwertsatz durch Wahl von 
+ \begin{equation*}
+  M_n\coloneqq \sum_{j=1}^n(Y_1-\expect{Y_1})\,,
+ \end{equation*}
+ $\kappa_n\coloneqq 1/\sqrt{n}$ und die von $M$ erzeugte Filtration. Um die
+ Lyapunov-Bedingung zu zeigen benötigt man die zusätzliche Annahme
+ $Y_1\in\ll^{2+\delta}$ für ein $\delta>0$. Der Satz bleibt jedoch wahr, wenn
+ man die Lyapunov-Bedingung durch die schwächere Lindeberg-Bedingung ersetzt,
+ mit der man ohne diese Annahme auskommt\footcite[Korollar 5.33]{lusch}.
+\end{rem}
+
+Außerdem brauchen wir noch ein paar Resultate aus der Analysis:
 \begin{lem}[Diskrete Regel von l'Hospital]\label{lem:lhospital}
- Sei $(a_n)_{n\geq 1}$ eine Folge in $\RR$ und $(b_n)_{n\geq 1}$ eine Folge positiver reeller Zahlen, sodass 
+ Sei $(a_n)_{n\geq 1}$ eine Folge in $\RR$ und $(b_n)_{n\geq 1}$ eine Folge in $(0,\infty)$, sodass 
  \begin{thmasslist}
  \item 
      $\sum_{n=1}^\infty b_n=\infty$ und
@@ -484,12 +505,43 @@ und
   \end{thmlist}
 \end{proof}
 \section{Konvergenzraten}
+Der aus der Vorlesung Wahrscheinlichkeitstheorie bekannte zentrale Grenzwertsatz
+kann verstanden werden als eine Aussage über die Konvergenzrate im starken
+Gesetz der großen Zahlen. Letzteres besagt für u.i.v. Zufallsvariablen
+$Y_1,Y_2,\dotsc\in\ll^1$ mit $\mu =\expect{Y_1}$
+\begin{equation*}
+  \frac{1}{n}\sum_{k=1}^nY_k-\mu\overset{n\to\infty}{\longrightarrow} 0\quad\textit{f.s.} 
+\end{equation*}
+Der zentrale Grenzwertsatz beantwortet (im Fall endlicher Varianz
+$\sigma^2=\Var{Y_1}>0$) die Frage
+  \enquote{Wie schnell ist die Konvergenz gegen $\mu$?}.
+
+Dazu gibt er eine Folge (nämlich $\sqrt{n}$) an, die genau schnell genug wächst,
+um sich mit der Nullfolge bei Multiplikation auszubalancieren. Das Ergebnis ist die
+bekannte schwache Konvergenz gegen eine Normalverteilung  
+\begin{equation*}
+ \sqrt{n}\left(\frac{1}{n}\sum_{k=1}^nY_k-\mu\right)\overset{d}{\to}\nn(0,\sigma^2)\,. 
+\end{equation*}
+Jede langsamer wachsende Folge als $\sqrt{n}$ würde gegen die Nullfolge
+\enquote{verlieren} und man bekäme Konvergenz des Produktes gegen die
+Dirac-Verteilung bei 0. Umgekehrt wäre jede schneller wachsende Folge
+\enquote{zu schnell} und das Produkt würde nicht mehr schwach konvergieren. 
+
+Statt dem Gesetz der großen Zahlen werden wir gleich für den
+Robbins-Monro-Algorithmus annehmen
+\begin{equation*}
+ X_n-x_0\to 0\quad\textit{f.s.} 
+\end{equation*}
+und wir suchen wie oben eine passende Folge $(a_n)$ mit $a_n\to\infty$ und
+\begin{equation*}
+ a_n(X_n-x_0)\overset{d}{\to}\nn(0, ?)\,. 
+\end{equation*}
 \begin{thm}[Konvergenzraten, stabiler CLT]
  \label{thm:haupt}
  Seien $\gamma_n=C_1/(C_2+n)$ für $n\geq 1$ mit reellen Konstanten $C_1>0$,
- $C_2\geq 0$ und $x_0\in h^{-1}(0)$. Die folgenden Bedingungen seien erfüllt:
+ $C_2\geq 0$ und $x_0\in\set{h=0}$. Die folgenden Bedingungen seien erfüllt:
  \begin{thmasslist}
- \item $X_n\to x_0$ f.s. für $n\to\infty$.
+ \item $X_n\to x_0$ f.s. für $n\to\infty$,
  \item $X_0\in\ll^2$ und $g(x)\leq C(1+x^2)$ für eine Konstante $C\in\RR_+$ und
    alle $x\in \interv$,\label{thm:haupt:b}
  \item $g$ sei stetig in $x_0$, h sei differenzierbar in $x_0$, $h'(x_0)<0$ und\label{thm:haupt:c}
@@ -520,16 +572,39 @@ und
  \end{enumerate}
 \end{thm}
 \begin{rem}
-  Downcrossing etc.
+  \begin{remlist}
+  \item Die quadratische Abschätzung für den Restterm in \cref{thm:haupt:c} ist
+    erfüllt, wenn $h$ in einem offenen Intervall $J$ um $x_0$ differenzierbar
+    ist mit Lipschitz-stetiger Ableitung. Denn dann gilt nach dem
+    Mittelwertsatz, dass für alle $x\in J$ ein $\eta$ zwischen $x$ und $x_0$
+    existiert mit
+    \begin{align*}
+      \abs{h(x)-h'(x_0)(x-x_0)}&=\abs{h(x)-h(x_0)-h'(x_0)(x-x_0)} \\
+                               &=\abs{h'(\eta)(x-x_0)-h'(x_0)(x-x_0)} \\
+                               &=\abs{h'(\eta)-h'(x_0)}\abs{x-x_0} \\
+                               &\leq L\abs{\eta-x_0}\abs{x-x_0}\leq L\abs{x-x_0}^2\,,
+    \end{align*}
+    wobei $L$ die Lipschitz-Konstante von $h'$ sei. Insbesondere ist die
+    Voraussetzung erfüllt, wenn $h$ in einer Umgebung von $x_0$ zweimal stetig
+    differenzierbar ist.
+  \item Es gibt einen \enquote{Phasenübergang} bei $\abs{h'(x_0}C_1=1/2$. Die schnellste Konvergenzrate ist im Fall $\abs{h'(x_0}C_1>1/2$
+  realisiert. Dies ist intuitiv gesprochen erfüllt, wenn $h$ um $x_0$ herum
+  schnell fällt bzw. die Schrittweiten $\gamma_n$ groß sind. Da allerdings bei
+  Anwendung des Algorithmus $x_0$ und damit auch die Ableitung $h'(x_0)$
+  unbekannt sind, ist nicht klar, wie groß die Schrittweite gewählt werden muss,
+  um die schnelle Konvergenzrate tatsächlich zu bekommen.
+\item Der ausgeartete Fall $g(x_0)=0$ ist im Satz nicht ausgeschlosssen. Die
+  Limesverteilungen sind dann Dirac-Verteilungen in 0.
+  \end{remlist}
 \end{rem}
-\begin{proof}
+\begin{proof}[Beweis von \cref{thm:haupt}]
   Hier wird nur ein Teil vom Fall $\abs{h'(x_0)}C_1>1/2$ bewiesen. Für
-  den vollen Beweis siehe \cite[Satz~11.4]{lpw}.
+  den vollen Beweis siehe \cite[Satz~11.4]{lusch}.
   
 Wie wir letzte Woche gesehen haben, folgt aus \cref{thm:haupt:b}, dass $X$ ein
 $\ll^2$-Prozess ist. Sei
 \begin{equation*}
- a\coloneqq -h'(x_0)=\abs{h'(x_o)}\,. 
+ a\coloneqq -h'(x_0)=\abs{h'(x_0)}\,. 
 \end{equation*}
 Nach \ref{thm:haupt:c} gilt $a>0$. Man wähle $n_0\in\NN$ mit $a\gamma_{n_0}<1$ und
 definiere für $n\geq 0$
@@ -565,7 +640,7 @@ $\sqrt{n}\beta_n(X_0-x_0)\to 0$ punktweise.
 
 Es gilt auch
 $\sqrt{n}\beta_nB_n\to 0$ fast sicher, allerdings ist der Beweis nicht trivial
-und kann nachgelesen werden in \cite[Satz~11.4]{lpw}. Er basiert auf der Idee,
+und kann nachgelesen werden in \cite[Satz~11.4]{lusch}. Er basiert auf der Idee,
 die Zuwächse $\Delta B_n$ für große $n$ gegen $(X_n-x_0)^2$ abzuschätzen. Dazu
 wird \cref{thm:haupt:c} genutzt.
 
@@ -666,13 +741,59 @@ Wir kehren zur Zerlegung aus \cref{eq:zerl} zurück:
 \begin{equation*}
  \sqrt{n}(X_n-x_0)=\sqrt{n}\beta_n(X_0-x_0) +\sqrt{n}\beta_nM_n+\sqrt{n}\beta_nB_n
 \end{equation*}
-Mit der fast sicheren Konvergenz der beiden anderen Terme gegen $0$ folgt die Behauptung mittels \cref{cor:mischsum}.
+Aufgrund der fast sicheren Konvergenz der beiden anderen Terme gegen $0$ folgt die Behauptung mittels \cref{cor:mischsum}.
 \end{proof}
-\begin{rem}
- Optimale Schrittweite 
+\begin{rem}[{Optimale Schrittweiten, \cite[S. 386]{lusch}}]
+ Im nicht-ausgearteten Fall $g(x_0)>0$ wird die Limesvarianz
+ \begin{equation*}
+  \frac{g(x_0)C_1^2}{2\abs{h'(x_0)}C_1-1} 
+ \end{equation*}
+unter der Bedingung $\abs{h'(x_0)}C_1>1/2$ als Funktion von $C_1$ durch
+\begin{equation*}
+ C_1=\frac{1}{\abs{h'(x_0)}} 
+\end{equation*}
+minimiert mit resultierender Varianz
+\begin{equation*}
+ \frac{g(x_0)}{h'(x_0)^2}=\frac{\Var{H(x_0,Z_1)}}{h'(x_0)^2}\,. 
+\end{equation*}
+Die beste Wahl der Schrittweiten ist also
+\begin{equation*}
+ \gamma_n=\frac{1}{\abs{h'(x_0)}(C_2+n)} 
+\end{equation*}
+für $n\geq 1$. Wie oben schon bemerkt ist allerdings bei der Nullstellensuche
+$h'(x_0)$ nicht bekannt, sodass der Algorithmus mit diesen Schrittweiten nicht
+implementierbar ist.
 \end{rem}
-\begin{exmp}
- Mittelwert und Quantil 
+\begin{exmp}[{Rekursiver Quantilschätzer, \cite[Bsp. 11.7]{lusch}}]
+  Die Verteilungsfunktion $F$ von $P^{Z_1}$ sei stetig und es sei $\alpha\in (0,
+  1)$ gegeben. Durch den Robbins-Monro-Algorithmus kann rekursiv ein
+  $\alpha$-Quantil von $P^{Z_1}$ geschätzt werden. Dazu sei $X_0=s\in\RR$,
+  $H(x,z)=\alpha-\indics{z\leq x}$, $C_1>0$ und $C_2\geq 0$. Die
+  Rekursionsgleichung hat dann die Form
+  \begin{equation*}
+   X_{n+1}=X_n+\frac{C_1}{C_2+n+1}(\alpha-\indics{Z_{n+1}\leq X_n})
+  \end{equation*}
+  und es gilt $h(x)=\alpha -F(x)$ und $g(x)=\alpha^2-2\alpha F(x)+F(x)$ für
+  $x\in\RR$. Außerdem ist h monoton fallend und $\set{h=0}=\set{F=\alpha}$ die
+  Menge der $\alpha$-Quantile von $P^{Z_1}$.
+  
+Nach dem Resultat von letzter Woche gilt
+\begin{equation*}
+ X_n\to X_\infty\quad\textit{f.s.}
+\end{equation*}
+für eine reelle Zufallsvariable $X_\infty$ mit
+\begin{equation*}
+  P(X_\infty\in\set{F=\alpha})=1\,. 
+\end{equation*}
+Gilt $\set{F=\alpha}=\{x_0\}$ und ist $F$ in einer Umgebung von $x_0$
+differenzierbar mit Lipschitz-stetiger Ableitung und $F'(x_0)>0$, so ist
+\cref{thm:haupt} anwendbar, denn die Voraussetzungen \ref{thm:haupt:b} und
+\ref{thm:haupt:d} sind aufgrund der Beschränktheit von $H$ erfüllt. Bei
+optimaler Wahl der Schrittweiten mit $C_1=1/\abs{h'(x_0)}=1/F'(x_0)$ folgt
+\begin{equation*}
+ \sqrt{n}(X_n-x_0)\to\nn\left(0, \frac{\alpha(1-\alpha)}{F'(x_0)^2}\right)\quad\textit{mischend}
+\end{equation*}
+für $n\to\infty$.
 \end{exmp}
 \printbibliography
 
